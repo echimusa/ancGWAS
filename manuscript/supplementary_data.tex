@@ -1,0 +1,613 @@
+% Template for PLoS
+% Version 1.0 January 2009
+%
+% To compile to pdf, run:  
+% latex plos.template
+% bibtex plos.template
+% latex plos.template
+% latex plos.template
+% dvipdf plos.template
+
+\documentclass[10pt]{article}
+
+% amsmath package, useful for mathematical formulas
+\usepackage{amsmath}
+%\usepackage{algorithm}
+\usepackage{longtable}
+\usepackage{multicol,multirow}
+\usepackage{colortbl}
+\usepackage[table]{xcolor}
+\definecolor{tableShade}{gray}{0.9}
+%\usepackage{algorithmic}
+\usepackage[section]{placeins}
+\usepackage{float}%
+% amssymb package, useful for mathematical symbols
+\usepackage{amssymb}
+\usepackage{url}
+% graphicx package, useful for including eps and pdf graphics
+% include graphics with the command \includegraphics
+\usepackage{graphicx,lscape}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+\usepackage{color} 
+
+% Use doublespacing - comment out for single spacing
+%\usepackage{setspace} 
+%\doublespacing
+
+
+% Text layout
+\topmargin 0.0cm
+\oddsidemargin 0.5cm
+\evensidemargin 0.5cm
+\textwidth 16cm 
+\textheight 21cm
+
+% Bold the 'Figure #' in the caption and separate it with a period
+% Captions will be left justified
+\usepackage[labelfont=bf,labelsep=period,justification=raggedright]{caption}
+
+% Use the PLoS provided bibtex style
+\bibliographystyle{plos2009}
+
+% Remove brackets from numbering in List of References
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+
+% Leave date blank
+\date{}
+
+\pagestyle{myheadings}
+%% ** EDIT HERE **
+
+
+%% ** EDIT HERE **
+%% PLEASE INCLUDE ALL MACROS BELOW
+
+%% END MACROS SECTION
+
+\begin{document}
+
+% Title must be 150 characters or less
+\begin{flushleft}
+{\Large
+\textbf{ancGWAS: a Post Genome-wide Association Study Method for Interaction, Pathway, and Ancestry Analysis in Homogeneous and Admixed Populations}
+}
+% Insert Author names, affiliations and corresponding author email.
+\\
+\vskip5mm
+Emile R. Chimusa$^{1,\ast}$, 
+Mamana Mbiyavanga$^{1,2}$, 
+Gaston K. Mazandu$^{1,2}$,
+Nicola J. Mulder$^{1,\ast}$
+\\
+\vskip5mm
+$^{\bf{1}}$Computational Biology Group, Department of Clinical Laboratory Sciences, Institute of Infectious Disease and Molecular Medicine, University of Cape Town, Medical School, 7925 Observatory, Cape Town, South Africa.\\
+$^{\bf{2}}$African Institute for Mathematical Sciences,7945 Muizenberg, Cape Town, South Africa.
+\\
+\vskip5mm
+$^{\ast}$Contact e-mail: emile@cbio.uct.ac.za and Nicola.Mulder@uct.ac.za
+\end{flushleft}
+
+% Please keep the abstract between 250 and 300 words
+%\section*{Abstract}
+
+% Please keep the Author Summary between 150 and 200 words
+% Use first person. PLoS ONE authors please skip this step. 
+% Author Summary not valid for PLoS ONE submissions.   
+%\section*{Author Summary}
+
+%\section*{Introduction}
+
+% Results and Discussion can be combined.
+%\section*{Results}
+
+%\subsection*{Subsection 1}
+
+%\subsection*{Subsection 2}
+
+%\section*{Discussion}
+
+% You may title this section "Methods" or "Models". 
+% "Models" is not a valid title for PLoS ONE authors. However, PLoS ONE
+% authors may use "Analysis" 
+%\section*{Materials and Methods}
+
+% Do NOT remove this, even if you are not including acknowledgments
+%\section*{Acknowledgments}
+
+%\section*{References}
+% The bibtex filename
+%\bibliography{template}
+\bibliography{ref}
+
+\newpage
+\section*{Figure Legends} % Legends}
+
+
+\begin{flushleft}
+Supplementary Figure {\bf 1:} {\bf(A) Number of overlaping genes between the top sub-networks obtained from dmGWAS and ancGWAS and the simulated disease-susceptibility genes (DSG). (B) Number of overlapping genes between top sub-networks obtained from dmGWAS and ancGWAS and the entire disease pathway ($AGED\_MOUSE\_HYPOTH\_UP$).}
+\end{flushleft}
+
+\section*{Tables}
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{\textbf{Sub-network-specific ancestry and unusual case-control ancestry difference test using the causal simulated data set of a 4-way admixed population: Ancestry proportion and unusual case-control ancestry difference test of the top $20$ sub-networks using the simulated data of a 4-way admixed population. The table displays sub-network-specific ancestry proportions; and the Wilcoxon signed-rank statistical test of unusual case-control difference in ancestry. As expected again the results of this causal simulation data demonstrate an evidence of unusual case-control difference in YRI ancestry which is consistent with our simulation.}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.85}{
+\begin{tabular}{l l l l |l l}\hline\hline
+
+\multicolumn{6}{|c|}{ancGWAS:Sub-network-specific ancestry and case-control Ancestry difference}  \\[3pt] \hline\hline 
+ \multicolumn{4}{c}{Ancestry proportion (Adjusted Wilcoxon, Q$\_$Wilcoxon)} & \multicolumn{2}{c}{Genes in sub-network} \\[3pt] \hline\hline
+ \textbf{YRI}& \textbf{CEU}& \textbf{GIH}& \textbf{CHB} &\textbf{Hub Gene} & \textbf{Sub-network} \\[2pt]\hline
+
+$0.22$($0.002$, $0.0$) & $0.59$(\textbf{$2.18e-07$}, $0.0$) & $0.04$($0.002$, $0.0$) & $0.12$($0.002$, $0.0$) & \textit{UBC} & \textit{UBE2Q1, HECTD3, HPCA, AHDC1,} \\[2pt]
+&&&&& \textit{ZCCHC11, IFFO2, HSPA6, UBE2J2, SUMO1,} \\[2pt]
+&&&&& \textit{TMCO1, SLC6A9, WLS, FLVCR1, AGL,} \\[2pt]
+&&&&&\textit{SLC30A1, S100A14, TROVE2, S100A16,} \\[2pt]
+&&&&&\textit{SMAP2, OTUD7B, KIAA0907} \\[2pt]
+$0.18$($0.4$, $0.096$) & $0.54$($0.0004$, $0.0006$) & $0.09$($0.01$, $0.006$) & $0.18$($0.004$, $0.096$) & \textit{SLC2A1} & \textit{UBE2I, VHL, SUMO1, PDIA3, CALR, SUMO2,} \\[2pt]
+ &&&&& \textit{COPS6, GAPDH, SLC2A1, STOM, PTK2B, GIPC1, CANX} \\[2pt]
+
+$0.24$($0.4$, $0.096$) & $0.56$($0.004$, $0.0009$) & $0.05$($0.1$, $0.006$) & $0.13$($0.1$, $0.096$) & \textit{CANX} & \textit{PIGK, CALR, SUMO2, PDIA3, SLC2A1, UBC, CANX} \\[2pt]
+
+$0.23$($0.4$, $0.04$) & $0.55$($0.4$, $0.04$) & $0.07$($0.4$, $0.04$) & $0.14$($0.4$, $0.04$) & \textit{PEX14} & \textit{HDAC1, PEX19, MED8, PEX14, PEX7} \\[2pt]
+
+$0.26$($0.4$, $0.096$) & $0.55$($0.4$, $0.096$) & $0.06$($0.4$, $0.096$) & $0.13$($0.4$, $0.096$) & \textit{UBE2I} & \textit{UBE2I, SUMO1, SUMO2, PPM1J, SLC2A1, UBC} \\[2pt]
+$0.25$($0.4$, $0.05$) & $0.56$($0.4$, $0.05$) & $0.06$($0.4$, $0.05$) & $0.15$($0.4$, $0.05$) & \textit{RERE} & \textit{RERE, HDAC1, RBFOX2, ECM1} \\[2pt]
+$0.20$($0.4$, $0.03$) & $0.56$($0.4$, $0.029$) & $0.07$($0.4$, $0.03$) & $0.14$($0.4$, $0.03$) & \textit{SUMO1} & \textit{UBE2I, KIF14,} \\[2pt]
+&&&&&\textit{RWDD3, SUMO1, SUMO2, SYDE2,} \\[2pt]
+&&&&&\textit{GAPDH, SLC2A1, HIST2H2BC,} \\[2pt] 
+&&&&&\textit{VHL, UBC, CDCA8, CAMSAP2} \\[2pt]
+$0.22$($0.4$, $0.07$) & $0.57$($0.4$, $0.07$) & $0.06$($0.4$, $0.07$) & $0.14$($0.44$, $0.07$) & \textit{ERBB2} & \textit{ERBB2, SH2D5, FGR, JAK1} \\[2pt]
+$0.26$($0.3$, $0.015$) & $0.55$($0.30$, $0.015$) & $0.05$($0.301$, $0.015$) & $0.13$($0.30$, $0.015$) & \textit{MYOC} & \textit{PKLR, FUBP1, CLIC1, EEF1A1, OLFML3, C1QB,} \\[2pt]
+&&&&&\textit{NOTCH2, CAP1, OLFM3, ENO1, ECE1, MYOC, ACTB} \\[2pt]
+$0.19$($0.4$, $0.035$) & $0.53$($0.4$, $0.035$) & $0.09$($0.4$, $0.035$) & $0.19$($0.4$, $0.035$) & \textit{KDM5B} & \textit{HDAC1, KDM1A, CDX2, CDC20, RBBP4, KDM5B} \\[2pt]
+$0.23$($0.3$, $0.01$) & $0.57$($0.299$, $0.0154$) & $0.06$($0.299$, $0.015$) & $0.12$($0.299$, $0.015$) & \textit{PTPRC} & \textit{CD1D, TIE1, RNF11, PLK3, FCGR3A, NTRK1, LSM1,} \\[2pt]
+&&&&&\textit{CD247, PTPRC, CD2, JAK1, LEPR, LCK, SLAMF1} \\[2pt]
+$0.24$($0.30$, $0.01$) & $0.54$($0.301$, $0.015$) & $0.05$($0.301$, $0.015$) & $0.14$($0.301$, $0.015$) & \textit{TP73} & \textit{UBE4B, RAB3GAP2, KDM1A, ASPM, HMGB1, TPM3, CHUK,} \\[2pt] 
+&&&&&\textit{TP73, SASS6, TP53BP2, EIF2C1, SPSB1, MDM4} \\[2pt]
+$0.23$($0.4$, $0.023$) & $0.55$($0.4$, $0.023$) & $0.07$($0.4$, $0.023$) & $0.13$($0.4$, $0.023$) & \textit{EIF2C3} & \textit{ATAD3B, EIF2C4, EIF2C3, DDOST,} \\[2pt] 
+&&&&&\textit{TNRC6A, EEF1A1, CCT3, DBT, WDR77} \\[2pt]
+$0.22$($0.03$, $0.004$) & $0.56$($0.031$, $0.004$) & $0.09$($0.031$, $0.004$) & $0.14$($0.031$, $0.004$) & \textit{IKBKE} & \textit{CAPZB, ADSS, RPL23A, DSTYK, SUMO2, RPL18A,} \\[2pt] 
+&&&&&\textit{PSMD2, CACYBP, MRPS14, ST13, IKBKE, FH,} \\[2pt]
+&&&&&\textit{PFDN2, AK2, VAMP3, PGD, RBM8A, CTPS1,} \\[2pt]
+&&&&&\textit{TPM3, RPL22, SUMO1, YARS, EPRS, ATP5F1, HSPA8,} \\[2pt]
+&&&&&\textit{TSNAX, CRYZ, SIKE1, PABPC4, NCDN, NASP, PARP1,} \\[2pt]
+&&&&&\textit{TPD52L2, RHOC, AKR1B1, SRM, NPM1, TAGLN2, UBE2I,} \\[2pt]
+&&&&&\textit{SEC22B, CAPZA1, SDHB, BPNT1, PTGES3, PSMB4,} \\[2pt]
+&&&&&\textit{DLST, SLC2A1, RPL31, RPS3A, SERBP1, HSP90AA1, SSB} \\[1.5pt] \hline\hline
+
+\end{tabular}}
+\label{tab:pathSIM1}
+\end{table}
+\end{landscape}
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{\textbf{(Table 1 Continues.)Sub-network-specific ancestry and unusual case-control ancestry difference test using the causal simulated data set of a 4-way admixed population: Ancestry proportion and unusual case-control ancestry difference test of the top $20$ sub-networks using the simulated data of a 4-way admixed population. The table displays sub-network-specific ancestry proportions; and the Wilcoxon signed-rank statistical test of unusual case-control difference in ancestry. As expected again the results of this causal simulation data demonstrate an evidence of unusual case-control difference in YRI ancestry which is consistent with our simulation.}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.85}{
+\begin{tabular}{l l l l |l l}\hline\hline
+
+\multicolumn{6}{|c|}{ancGWAS:Sub-network ancestry proportion and Case-control Ancestry difference}  \\[3pt] \hline\hline 
+ \multicolumn{4}{c}{Ancestry proportion (Adjusted Wilcoxon, Q$\_$Wilcoxon)} & \multicolumn{2}{c}{Genes in sub-network} \\[3pt] \hline\hline
+ \textbf{YRI}& \textbf{CEU}& \textbf{GIH}& \textbf{CHB} &\textbf{Hub Gene} & \textbf{Sub-network} \\[2pt]\hline
+$0.22$($0.4$, $0.023$) & $0.57$($0.4$, $0.023$) & $0.06$($0.4$, $0.023$) & $0.14$($0.4$, $0.023$) & \textit{USP21} & \textit{EXOSC10, USP48, ARHGEF2, RBM8A, ISG15,} \\[2pt]
+&&&&&\textit{MARK1, FUCA1, USP21, PPP6R3} \\[2pt]
+$0.18$($0.4$, $0.04$) & $0.58$($0.4$, $0.04$) & $0.06$($0.4$, $0.04$) & $0.15$($0.4$, $0.04$) & \textit{TFDP1} & \textit{CDK3, RNF2, E2F2, TFDP1, LIN9} \\[2pt]
+$0.23$($0.14$, $0.01$) & $0.58$($0.146$, $0.01$) & $0.05$($0.146$, $0.01$) & $0.13$($0.146$, $0.01$) & \textit{HDGF} & \textit{EXOSC10, RCC1, RCC2, RPL35, HP1BP3, ATAD3A,} \\[2pt]
+&&&&&\textit{DHX9, RPL34, ZRANB2, NUDC, PARP1, RPS15A,} \\[2pt] 
+&&&&&\textit{RBBP4, RPL17, RPL22, HIST2H2BE, POLRMT,} \\[2pt] 
+&&&&&\textit{HDGF, EBNA1BP2, HDAC1, SSB} \\[2pt]
+$0.23$($0.4$, $0.02$) & $0.56$($0.4$, $0.025$) & $0.06$($0.4$, $0.025$) & $0.13$($0.4$, $0.025$) & \textit{CTBP2} & \textit{RPL7A, SOX13, RPS29, FHL3, RPL17,} \\[2pt] 
+&&&&&\textit{CTBP2, CBX4, PROX1} \\[2pt]
+$0.24$($0.4$, $0.05$) & $0.54$($0.4$, $0.05$) & $0.06$($0.4$, $0.05$) & $0.14$($0.4$, $0.05$) & \textit{CSF3R} & \textit{INPP5D, SHC1, CSF3R, JAK1} \\[2pt]
+$0.24$($0.146$, $0.01$) & $0.55$($0.146$, $0.01$) & $0.07$($0.146$, $0.01$) & $0.15$($0.146$, $0.01$) & \textit{RAB3GAP2} & \textit{HDAC1, RPS6KA1, HIST3H3, RAB3GAP2,} \\[2pt] 
+&&&&&\textit{PYGO2, PIAS3, SNIP1, SP1, HMGB1,} \\[2pt] 
+&&&&&\textit{MKNK1, KHDRBS1, PARP1, TP73, RBBP4,} \\[2pt]
+&&&&&\textit{GTF2B, KPNA6, MTF1, CNTN2,} \\[2pt] 
+&&&&&\textit{RPA2, ATF3, CDC20} \\[1.5pt] \hline\hline
+\end{tabular}}
+\label{tab:pathSIM2}
+\end{table}
+\end{landscape}
+\newpage
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{\textbf{\small{Post GWAS at the gene level using the null simulation data set of a 4-way admixed population: Top $19$ genes from combining effect of associated SNPs within a gene using ancGWAS. Table displays also the related standard GWAS results of these top genes, gene-specific ancestry proportions and the Wilcoxon signed-rank statistical test of unusual case-control difference in ancestry. The results of this null simulation data demonstrate that the methods developed in ancGWAS are calibrated.}}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.85}{
+\begin{tabular}{c c| c|c c c c| c c c c}\hline\hline
+
+\multicolumn{2}{|c|}{GWAS} & \multicolumn{5}{|c|}{Post GWAS with ancGWAS}&\multicolumn{4}{|c|}{ancGWAS:Case-control ancestry difference}  \\[3pt] \hline\hline 
+\multicolumn{2}{c}{ } & \multicolumn{3}{c}{} & \multicolumn{4}{c}{Gene-specific Ancestry (Adjusted Wilcoxon, Q\_Wilcoxon)} \\[3pt] \hline\hline
+\textbf{SNPs} & \textbf{P}& \textbf{Gene} & \textbf{Liptak} &  \textbf{Q\_Liptak} & \textbf{Fisher} &\textbf{Q\_Fisher}  & \textbf{YRI}& \textbf{CEU}& \textbf{GIH}& \textbf{CHB} \\[2pt]\hline
+\textit{rs12049605} & 0.03 & \textit{ATP2B4} & $1.2e-06$ & $1.17e-06$ & 0.0003 & 0.0003 & 0.6(0.6,0.0006) & 0.04(0.6, 0.0007) & 0.09(0.6, 0.0006) & 0.25(1.0, 0.0002) \\[2pt]
+\textit{rs7513619} & 0.07 & \textit{AK5} & $3.9e-06$ & $1.9e-06$ & 0.006 & 0.003 & 0.57(0.2,0.0003) & 0.05(0.2, 0.0003) & 0.08(0.2, 0.0003) & 0.28(0.2, 0.0001) \\[2pt]
+\textit{rs12563141} & 0.06 & \textit{ECE1} & 0.0001 & 4.3e-05 & 0.036 & 0.01 & 0.56(0.6,0.0006) & 0.06(0.6, 0.0006) & 0.18(0.6, 0.0006) & 0.19(1.0, 0.0002) \\[2pt]
+\textit{rs212541} & 0.04 & \textit{EIF4G3} & 0.0005 & 0.0001 & 0.1 & 0.02 & 0.56(0.6,0.0006) & 0.06(0.6, 0.0006) & 0.18(0.6, 0.0006) & 0.18(1.0, 0.0002) \\[2pt]
+\textit{rs6694243} & 0.04 & \textit{RERE} & 0.002 & 0.0004 & 0.3 & 0.05 & 0.56(0.6,0.0005) & 0.05(0.6, 0.00056) & 0.13(0.62, 0.0005) & 0.23(0.6, 0.0002) \\[2pt]
+\textit{rs7415831} & 0.03 & \textit{SPSB1} & 0.003 & 0.0006 & 0.2 & 0.05 & 0.55(0.6, 0.0006) & 0.07(0.6, 0.0007) & 0.14(0.66, 0.0006) & 0.23(1.0, 0.0002) \\[2pt]
+\textit{rs12724078} & 0.04 & \textit{SGIP1} & 0.008 & 0.001 & 0.9 & 0.1 & 0.53(0.3, 0.0004) & 0.05(0.3, 0.0004) & 0.12(0.30, 0.0004) & 0.27(0.3, 0.0001) \\[2pt]
+\textit{rs1283294} & 0.08 & \textit{CYP2J2} & 0.02 & 0.003 & 0.9 & 0.1 & 0.56(0.6, 0.0006) & 0.06(0.6, 0.0006) & 0.12(0.6, 0.0006) & 0.24(1.0, 0.0002) \\[2pt]
+\textit{rs1044365} & 0.04 & \textit{ZYG11B} & 0.02 & 0.003 & 0.9 & 0.1 & 0.53(0.6, 0.0008) & 0.05(0.6, 0.0008) & 0.17(0.6, 0.0008) & 0.23(1.0, 0.0003) \\[2pt]
+\textit{rs4143111} & 0.05 & \textit{CDA} & 0.03 & 0.003 & 0.9 & 0.1 & 0.56(0.6, 0.0008) & 0.06(0.6, 0.0008) & 0.18(0.6, 0.0008) & 0.18(1.0, 0.0003) \\[2pt]
+\textit{rs10157719} & 0.06 & \textit{CACNA1S} & 0.03 & 0.003 & 0.9 & 0.1 & 0.58(0.6, 0.0006) & 0.03(0.6, 0.0006) & 0.11(0.6, 0.0006) & 0.26(0.9, 0.0002) \\[2pt]
+\textit{rs1039287} & 0.06 & \textit{DENND1B} & 0.04 & 0.003 & 0.9 & 0.1 & 0.55(0.6, 0.0006) & 0.04(0.6, 0.0006) & 0.11(0.6, 0.0006) & 0.28(1.0, 0.0002) \\[2pt]
+\textit{rs12139532} & 0.03 & \textit{CACNA1E} & 0.05 & 0.003 & 0.9 & 0.2 & 0.55(0.2, 0.0003) & 0.07(0.20, 0.0003) & 0.14(0.2, 0.0003) & 0.22(0.2, 0.0001) \\[2pt]
+\textit{rs9661714} & 0.08 & \textit{FMN2} & 0.08 & 0.005 & 0.9 & 0.3 & 0.63(0.1, 0.0003) & 0.04(0.10, 0.0003) & 0.10(0.1, 0.0003) & 0.21(0.1, 0.0001) \\[2pt]
+\textit{rs11572201} & 0.07 & \textit{HOOK1} & 0.2 & 0.013 & 0.9 & 0.3 & 0.56(0.6, 0.0008) & 0.06(0.6, 0.0008) & 0.12(0.6, 0.0008) & 0.24(1.0, 0.0003) \\[2pt]
+\textit{rs10916859} & 0.02 &  \textit{KIF17} & 0.2 & 0.01 & 0.9 & 0.4 & 0.56(0.6, 0.0007) & 0.06(0.6, 0.0007) & 0.18(0.6, 0.0007) & 0.18(1.0, 0.0002) \\[2pt]
+\textit{rs6667480} & 0.03 & \textit{SYT6} & 0.3 & 0.01 & 0.9 & 0.5 & 0.62(0.6, 0.0006) & 0.08(0.6, 0.0006) & 0.14(0.6, 0.0006) & 0.14(0.8, 0.0002) \\[2pt]
+\textit{rs347282} & 0.09 & \textit{NOS1AP} & 0.3 & 0.02 & 0.9 & 0.5 & 0.58(0.1, 0.0003) & 0.04(0.1, 0.0003) & 0.11(0.1, 0.0003) & 0.25(0.1, 0.0001) \\[2pt]
+\textit{rs3791127} & 0.01 & \textit{ST3GAL3} & 0.3 & 0.02 & 0.9 & 0.5 & 0.52(0.6, 0.0006) & 0.07(0.6, 0.0006) & 0.19(0.6, 0.0006) & 0.19(1.0, 0.0002) \\[1.5pt]\hline\hline
+\end{tabular}}
+\label{tab:mod}
+\end{table}
+\end{landscape}
+
+\newpage
+
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{\textbf{\small{Post GWAS at the sub-networks level using the null simulation data set of a 4-way admixed population: Top $19$ sub-networks with $p$-values (obtained from liptak-stouffer method) using ancGWAS. The table displays the top biological pathway associated with each sub-network, and the score of overlap (Z$\_w$) between sub-network and the associated known biological pathway. OvP-pathway and OvP-disease genes in the Table provide the list of overlapping genes between sub-network versus pathway and sub-network versus simulated diseases or genes interacting with simulated diseases, respectively. The results are not significant, consistently with the simulation.}}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.7}{
+\begin{tabular}{c c c l c | c c c c}\hline\hline
+
+\multicolumn{5}{|c|}{Sub-network association } & \multicolumn{4}{|c|}{ancGWAS:Case-control ancestry difference} \\[3pt] \hline\hline
+\multicolumn{5}{|c|}{ } & \multicolumn{4}{|c|}{sub-network-specific Ancestry (Adjusted Wilcoxon, Q$\_$Wilcoxon)} \\[3pt] \hline\hline
+\textbf{GeneHub} & \textbf{Liptak} & \textbf{\#Genes} & \textbf{Pathway} & \textbf{Z$\_w$} & \textbf{YRI}& \textbf{CEU}& \textbf{GIH}& \textbf{CHB} \\[3pt] \hline\hline
+
+UBC & 0.06& 855 & Integrin family cell surface interactions & -2.4 & 0.25(0.0001, $3.8e-05$) & 0.56(0.0001, $3.8e-05$) & 0.05(0.0001, $3.8e-05$) & 0.13(0.0001, $3.8e-05$) \\[2pt]
+\textit{AK5} & 0.5 & 14 & IL3-mediated signaling events & 2.8 & 0.24(0.4, 0.08) & 0.57(0.4, 0.07) & 0.06 (0.4, 0.07) & 0.14(0.4, 0.08) \\[2pt]
+\textit{EIF4G3} & 0.4 & 13 & Gene Expression & 31.3 & 0.24 (0.4, 0.09) & 0.58(0.4, 0.09) & 0.05 (0.4, 0.09) & 0.14 (0.4, 0.08) \\[2pt]
+\textit{SPSB1} & 1.0 & 11 & Proteoglycan syndecan-mediated signaling events & 4.6 & 0.24(0.4, 0.05) & 0.54 (0.4, 0.08) & 0.06 (0.4, 0.08) & 0.14(0.4, 0.09) \\[2pt]
+\textit{HOOK1} & 1.0 & 13 & Processing of Capped Intron-Containing Pre-mRNA & 0.0 & 0.19(0.4, 0.1) & 0.54(0.4, 0.1) & 0.07(0.4, 0.3) & 0.19(0.4, 0.4) \\[2pt]
+\textit{SRC} & 1.0 & 40 & Proteoglycan syndecan-mediated signaling events & 5.46 & 0.25(0.04, 0.008) & 0.56(0.04, 0.008) & 0.06(0.04, 0.008) & 0.13(0.04, 0.008) \\[2pt]
+\textit{NOS1AP} & 1.0 & 10 & Proteoglycan syndecan-mediated signaling events & 0.48 & 0.28(0.4, 0.09) & 0.57(0.4, 0.06) & 0.05(0.4, 0.06) & 0.09(0.4, 0.07) \\[2pt]
+\textit{MARK1} & 1.0 & 14 & IL3-mediated signaling events & 2.8 & 0.24(0.4, 0.08) & 0.55 (0.4, 0.08) & 0.05(0.4, 0.08) & 0.14(0.4, 0.08) \\[2pt]
+\textit{RBM8A} & 1.0 & 21 & Processing of Capped Intron-Containing Pre-mRNA & 66.6 & 0.23(0.4, 0.02) & 0.54 (0.4, 0.028) & 0.08(0.4, 0.02) & 0.13(0.4, 0.08) \\[2pt]
+\textit{NID1} & 1.0 & 22 & Beta 1 integrin cell surface interactions & 8.57 & 0.22(0.4, 0.08) & 0.55(0.4, 0.08) & 0.07(0.4, 0.08) & 0.13(0.4, 0.08) \\[2pt]
+\textit{IRF6} & 1.0 & 8 & Proteoglycan syndecan-mediated signaling events & 3.75 & 0.27(0.4, 0.13) & 0.57(0.4, 0.13) & 0.06(0.4, 0.13) & 0.1(0.4, 0.13) \\[2pt]
+\textit{STX12} & 1.0 & 14 & trans-Golgi Network Vesicle Budding & 158.03 & 0.25(0.4, 0.13) & 0.58(0.4, 0.13) & 0.07(0.4, 0.13) & 0.13(0.4, 0.13) \\[2pt]
+\textit{DDOST} & 1.0 & 28 & Signaling events mediate by HDAC Class I & 58.68 & 0.27(0.4, 0.08) & 0.56(0.4, 0.08) & 0.06(0.4, 0.08) & 0.12(0.4, 0.08) \\[2pt]
+\textit{USP21} & 1.0 & 24 & Proteoglycan syndecan-mediated signaling events & 0.96 & 0.24(0.4, 0.07) & 0.55(0.4, 0.07) & 0.08(0.4, 0.07) & 0.14 (0.4, 0.07) \\[2pt]
+\textit{PTPRF} & 1.0 & 28 & Beta 1 integrin cell surface interactions & 9.3 & 0.21(0.4, 0.08) & 0.58(0.4, 0.08) & 0.06(0.4, 0.08) & 0.13(0.4, 0.08) \\[2pt]
+\textit{RERE} & 1.0 & 30 & TRAIL signaling pathway & 3.02 & 0.25(0.4, 0.08) & 0.57 (0.4, 0.08) & 0.04(0.4, 0.08) & 0.12(0.4, 0.08) \\[2pt]
+\textit{HIST3H3} & 1.0 & 94 & Proteoglycan syndecan-mediated signaling events & 6.97 & 0.19(0.1, 0.01) & 0.61(0.1, 0.05) & 0.06(0.1, 0.01) & 0.14(0.14, 0.01) \\[2pt]
+\textit{NR1I3} & 1.0 & 15 & Proteoglycan syndecan-mediated signaling events & 5.39 & 0.23(0.4, 0.02) & 0.58(0.4, 0.06) & 0.06(0.4, 0.08) & 0.14(0.4, 0.08) \\[2pt]
+\textit{MED8} & 1.0 & 41 & Transcriptional Regulation of White Adipocyte Differentiation & 276.5 & 0.23(0.4, 0.04) & 0.6(0.4, 0.04) & 0.04(0.4, 0.08) & 0.12(0.4, 0.08) \\[1.5pt] \hline\hline
+\end{tabular}}
+\label{tab:netnull}
+\end{table}
+\end{landscape}
+
+\newpage
+\begin{table}[!htbp]
+\caption{\textbf{Top genetic markers with moderate/significant p-values obtained from association analysis based on EMMAX using simulation of pathway-based GWAS data.}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.85}{
+\begin{tabular}{c c c c c c c}\hline\hline
+\textbf{SNP}&\textbf{Gene}&\textbf{CHR}&\textbf{Region}&\textbf{$A_{1}$}&\textbf{$A_{2}$}&\textbf{P-value} \\[2pt]
+\textit{rs16861642}&\textit{CP}&3&q25.1&A&G&$1.45e-06$ \\[2pt]
+\textit{rs10060036}&\textit{KIF2A}&5&q12.1&C&T&$2.18e-06$ \\[2pt]
+\textit{rs953121}&\textit{DCC}&18&q21.3&G&T&$2.65e-06$ \\[2pt]
+\textit{rs4912500}&\textit{EPHB3}&3&q27.1&G&TT&$3.07e-06$ \\[2pt]
+\textit{rs920822}&\textit{RDX}&11&p15.4&C&G&$3.15e-06$ \\[2pt]
+\textit{rs2167071}&\textit{ANGPT2}&8&p23.1&A&G&$3.35e-06$ \\[2pt]
+\textit{rs1882314}&\textit{FBRSL1}&12&q24.33&A&G&$3.68e-06$ \\[2pt]
+\textit{rs9391129}&\textit{-}&-&-&-&-&$4.31e-06$ \\[2pt]
+\textit{rs12595323}&\textit{RFX7}&15&q21.3&A&G&$4.62e-06$ \\[2pt]
+\textit{rs9449387}&\textit{-}&-&-&-&-&$6.24e-06$ \\[2pt]
+\textit{rs7444781}&\textit{SLIT3}&5&q35.1&A&C&$6.73e-06$ \\[2pt]
+\textit{rs11724257}&\textit{-}&4&q24&A&G&$7.72e-06$ \\[2pt]
+\textit{rs4730481}&\textit{IMMP2L}&7&q31.1&A&C&$7.99e-06$ \\[2pt]
+\textit{rs302298}&\textit{-}&8&-&A&G&$8.45e-06$ \\[2pt]
+\textit{rs13006685}&\textit{-}&2&p25.2&A&G&$9.58e-06$ \\[2pt]
+\textit{rs4709327}&\textit{RPL21}&6&q25.3&A&T&$1.00e-05$ \\[2pt]
+\textit{rs2343542}&\textit{AACS}&12&q24.31&A&T&$1.00e-05$ \\[2pt]
+\textit{rs3756187}&\textit{ACOX3}&4&p16.1&C&G&$1.10e-05$ \\[2pt]
+\textit{rs10140097}&\textit{RAD51L1}&14&q24.1&C&T&$1.11e-05$ \\[2pt]
+\textit{rs2053108}&\textit{CADM2}&3&p12.1&G&T&$1.14e-05$ \\[2pt]
+\textit{\textbf{rs2834287}}&\textit{ITSN1}&21&q22.11&C&T&$1.1e-04$ \\[2pt]
+\textit{\textbf{rs507238}}&\textit{ATPIF1}&1&p35.3&T&C&$0.48$ \\[2pt]
+\textit{\textbf{rs2250305}}&\textit{CXADR}&21&q21.1&A&G&$0.19$ \\[1.5pt]\hline\hline
+\end{tabular}}
+\label{tab:gwaspath}
+\end{table}
+
+
+\begin{table}[!htbp]
+\caption{\textbf{Top genetic markers with moderate/significant p-values obtained from the association analysis based on EMMAX using $1145$ post-menopausal women of European ancestry with invasive breast cancer and $1142$ controls, genotyped at $528,169$ SNPs.}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.85}{
+\begin{tabular}{lllllll}\hline\hline
+\textbf{SNP}&\textbf{Gene}&\textbf{CHR}&\textbf{Region}&\textbf{$A_{1}$}&\textbf{$A_{2}$}&\textbf{P-value} \\[2pt]
+\textit{rs10510126}&\textit{FGFR2}&10&q26.13&C&T&$2.56e-06$ \\[2pt]
+\textit{rs12505080}&\textit{KIAA1239}&4&p14&T&C&$7.98e-06$ \\[2pt]
+\textit{rs17157903}&\textit{RELN}&7&q22.1&C&T&$1.02e-05$ \\[2pt]
+\textit{rs1219648}&\textit{FGFR2}&10&q26.13&A&G&$1.34e-05$ \\[2pt]
+\textit{rs7696175}&\textit{TLR1, TLR6}&4&p14&C&T&$1.40e-05$ \\[2pt]
+\textit{rs2420946}&\textit{FGFR2}&10&q26.13&C&T&$1.73e-05$ \\[2pt]
+\textit{rs6497337}&\textit{SYT17}&16&P12.3&G&A&$2.12e-05$ \\[2pt]
+\textit{rs1250255}&\textit{FN1}&2&q35&A&G&$3.21e-05$ \\[2pt]
+\textit{rs10804287}&\textit{EPHA4, MIR4268}&2&q35&G&A&$3.63e-05$ \\[2pt]
+\textit{rs16943326}&\textit{PPM1E}&17&q22&C&T&$4.30e-05$ \\[2pt]
+\textit{rs2981579}&\textit{FGFR2}&10&q26.13&C&T&$4.36e-05$ \\[2pt]
+\textit{rs197275}&\textit{-}&2&q24.2&C&T&$4.41e-05$ \\[2pt]
+\textit{rs1538472}&\textit{KIF26B}&1&q44&T&C&$4.53e-05$ \\[2pt]
+\textit{rs17663978}&\textit{BUB3, GPR26}&10&q26.13&C&T&$4.83e-05$ \\[2pt]
+\textit{rs11004359}&\textit{PCDH15}&10&q21.1&G&A&$5.24e-05$ \\[2pt]
+\textit{rs2930629}&\textit{ATP10A}&15&q12&T&C&$5.39e-05$ \\[2pt]
+\textit{rs873811}&\textit{C21orf82, MRPS6}&21&q22.11&C&T&$5.50e-05$ \\[2pt]
+\textit{rs4107736}&\textit{TMEM66, MIR3148}&8&p12&A&G&$5.53e-05$ \\[2pt]
+\textit{rs1034120}&\textit{-}&21&q21.1&C&T&$5.55e-05$ \\[2pt]
+\textit{rs10779967}&\textit{POLR1A, PTCD3}&2&p11.2&G&A&$5.61e-05$ \\[2pt]
+\textit{rs13285273}&\textit{MURC, LPPR1}&9&q31.1&G&A&$5.74e-05$ \\[2pt]
+\textit{rs11732323}&\textit{KIT, KDR}&4&q12&G&A&$5.77e-05$ \\[2pt]
+\textit{rs2194225}&\textit{IL7R}&5&p13.2&A&G&$6.56e-05$ \\[2pt]
+\textit{rs6711228}&\textit{-}&2&q21.2&C&T&$6.57e-05$ \\[2pt]
+\textit{rs12792184}&\textit{OR8A1}&11&q24.2&T&C&$7.07e-05$ \\[2pt]
+\textit{rs12682293}&\textit{MAP2K1P1}&8&p12&C&A&$7.12e-05$ \\[2pt]
+\textit{rs4445554}&\textit{USP6NL}&10&p14&C&T&$7.16e-05$ \\[2pt]
+\textit{rs4866929}&\textit{HCN1}&5&p12&A&G&$7.17e-05$ \\[2pt]
+\textit{rs12767486}&\textit{-}&10&q23.1&C&T&$7.37e-05$ \\[2pt]
+\textit{rs9953717}&\textit{CBLN2, SOCS6}&18&q22.3&C&T&$7.65e-05$ \\[1.5pt]\hline\hline
+\end{tabular}}
+\label{tab:gwascancer}
+\end{table}
+\newpage
+
+\begin{table}[H]
+\captionsetup{justification=raggedright,
+singlelinecheck=false}
+\caption{{\small Technical differences between dmGWAS and ancGWAS.}}
+\begin{centering}
+\rowcolors{2}{gray!10}{}%
+\begin{tabular}{lp{3.5cm}p{5cm}}
+%\toprule
+                         & dmGWAS    &        ancGWAS  \\[2pt]
+\hline
+Candidate sub-network searching & Yes & Yes \\[2pt]
+Annotation file \&  human PPI network & Yes & Yes \\[2pt]
+Pathway size adjustment & Yes & Yes \\[2pt]
+Gene weights & $p-$value & $p-$value, Ancestry proportion \\[2pt]
+$p$-value summary method  & Fisher's, Simes, Smallest, FDR 	&  Fisher's, Simes, Smallest, FDR \\[2pt]
+Edge weights & None	& gene-LD \\[2pt]
+Subgraph enrichment 	& $p-$value & $p-$value, Ancestry proportion, \\[2pt]
+Input data & List of SNP $p-$values & List of SNP $p-$values, SNP genotype data \\[2pt]
+%\bottomrule 
+\end{tabular}
+\par\end{centering}
+\label{tab:diff}
+\end{table}
+
+\newpage
+\begin{landscape}
+\begin{center}
+\begin{longtable}[H]{lcl}
+\caption{\textbf{List of $129$ previously confirmed breast cancer associated genes.}}\\ \hline\hline
+\textbf{Genes} & \textbf{Chromosome} & \textbf{Journal Reference} \endfirsthead  
+\multicolumn{3}{c}%
+{{\bfseries \tablename\ \thetable{} -- continued from previous page}} \\
+\textbf{Genes} & \textbf{Chromosome} & \textbf{Published Journal}  \\ \hline
+\endhead 
+\hline \multicolumn{3}{c}{{Continued on next page}}\\ \hline
+\endfoot
+\hline\hline
+\endlastfoot
+\hline 
+\textit{GSTM1} & 1 & Helzlsouer KJ et al. 1998. PMID:9539246\\[2pt]
+\textit{GSTM3} & 1 & Mitrunen, K.  et al. 2001. PMID:11303592\\[2pt]
+\textit{Intergenic} & 1 & Thomas ,et al. 2009. PMID:19330030\\[2pt]
+\textit{LEPR} & 1 & Gallicchio, L.  et al. 2007. PMID:17428620\\[2pt]
+\textit{MTHFR} & 1 & Martha J Shrubsole  et al.  2005. PMID:15868433\\[2pt]
+\textit{MYCL1} & 1 & Champeme MH et al. 1992. PMID:1345822\\[2pt]
+\textit{PTGS2} & 1 & Langsenlehner, U.  et al. 2006. PMID:16489098\\[2pt]
+\textit{TNFRSF1B} & 1 & Mestiri, S.  et al. 2005. PMID:15863392\\[2pt]
+\textit{TP73} & 1 & Li, H.  et al. 2006. PMID:16950799\\[2pt]
+\textit{BARD1} & 2 & Huo, X.  et al. 2006. PMID:17028982\\[2pt]
+\textit{CASP8} & 2 & Cox, A. et al  et al. 2007. PMID:17293864\\[2pt]
+\textit{CTLA4} & 2 & Ghaderi, A.  et al. 2004. PMID:15218356\\[2pt]
+\textit{CYP1B1} & 2 & Matyjasik, J.  et al. 2007. PMID:17458695\\[2pt]
+\textit{Intergenic} & 2 & Stacey ,et al. 2007. PMID:17529974\\[2pt]
+\textit{LHCGR} & 2 & Powell, B. L.  et al. 2003. PMID:12679452\\[2pt]
+\textit{SRD5A2} & 2 & Yang, C.  et al. 2002. PMID:12100746\\[2pt]
+\textit{UGT1A1} & 2 & Mol Biol (Mosk). 2006. 40(2). 263-70. PMID:16637266\\[2pt]
+\textit{ALDH1L1} & 3 & Stevens, V. L.  et al. 2007. PMID:17548676\\[2pt]
+\textit{GPX1} & 3 & Cox, D. G.  et al. 2006. PMID:16945136\\[2pt]
+\textit{PIK3CA} & 3 & Breast cancer research and treatment. 2005. PMID:16317585\\[2pt]
+\textit{RASSF1} & 3 & Schagdarsurengin, U.  et al. 2005. PMID:15942659\\[2pt]
+\textit{PPARGC1A} & 4 & Wirtenberger, M.  et al. 2006. PMID:16704985\\[2pt]
+\textit{SULT1E1} & 4 & Choi, J. Y.  et al. 2005. PMID:15894657\\[2pt]
+\textit{ADRB2} & 5 & Huang XE et al. 2001. PMID:11434877\\[2pt]
+\textit{FGFR4} & 5 & Thussbas, C.  et al. 2006. PMID:16822847\\[2pt]
+\textit{Intergenic} & 5 & Easton ,et al. 2007. PMID:17529967\\[2pt]
+\textit{MAP3K1} & 5 & Easton ,et al. 2007. PMID:17529967\\[2pt]
+\textit{PPARGC1B} & 5 & Wirtenberger, M.  et al. 2006. PMID:16704985\\[2pt]
+\textit{PRLR} & 5 & Vaclavicek, A.  et al. 2006. PMID:16434456\\[2pt]
+\textit{XRCC4} & 5 & Allen-Brady, K.  et al. 2006. PMID:16835328\\[2pt]
+\textit{C6orf97} & 6 & Zheng ,et al. 2009. PMID:19219042\\[2pt]
+\textit{CDKN1A} & 6 & Staalesen, V.  et al. 2006. PMID:17062672\\[2pt]
+\textit{ECHDC1} & 6 & Gold ,et al. 2008. PMID:18326623\\[2pt]
+\textit{ESR1} & 6 & Gallicchio, L.  et al. 2006. PMID:16808847\\[2pt]
+\textit{GSTA1} & 6 & Sweeney, C.  et al. 2003. PMID:12516103\\[2pt]
+\textit{HLA-DQB1} & 6 & Chaudhuri, S.  et al. 2000. PMID:11027344\\[2pt]
+\textit{HLA-DRB1} & 6 & Chaudhuri, S.  et al. 2000. PMID:11027344\\[2pt]
+\textit{PRL} & 6 & Vaclavicek, A.  et al. 2006. PMID:16434456\\[2pt]
+\textit{RNF146} & 6 & Gold ,et al. 2008. PMID:18326623\\[2pt]
+\textit{SOD2} & 6 & Yao S  et al.  2010. PMID:20309628\\[2pt]
+\textit{VEGFA} & 6 & Krippl, P.  et al. 2003. PMID:12845639\\[2pt]
+\textit{ABCB1} & 7 & Zubor, P.  et al. 2007. PMID:17549370\\[2pt]
+\textit{AHR} & 7 & Pharmacogenet Genomics. 2006. 16(4). 237-43. PMID:16538170\\[2pt]
+\textit{CYP3A5} & 7 & Tucker, A. N.  et al. 2005. PMID:15596297\\[2pt]
+\textit{IGFBP3} & 7 & Al-Zahrani, A.  et al. 2006. PMID:16306136\\[2pt]
+\textit{IL6} & 7 & Snoussi, K.  et al. 2005. PMID:16464738\\[2pt]
+\textit{Intergenic} & 7 & Murabito ,et al. 2007. PMID:17903305\\[2pt]
+\textit{NOS3} & 7 & Lee, K. M.  et al. 2007. PMID:17262178\\[2pt]
+\textit{PON1} & 7 & Gallicchio, L.  et al. 2007. PMID:17428620\\[2pt]
+\textit{POR} & 7 & Haiman, C. A.  et al. 2007. PMID:17440066\\[2pt]
+\textit{SERPINE1} & 7 & Lei, H.  et al. 2007. PMID:17616807\\[2pt]
+\textit{XRCC2} & 7 & Kuschel, B.  et al. 2002. PMID:12023982\\[2pt]
+\textit{GRIK1} & 8 & Murabito ,et al. 2007. PMID:17903305\\[2pt]
+\textit{Intergenic} & 8 & Easton ,et al. 2007. PMID:17529967\\[2pt]
+\textit{MYC} & 8 & Wirtenberger, M.  et al. 2005. PMID:15929079\\[2pt]
+\textit{NAT1} & 8 & Pfau W 1998. PMID:9829711\\[2pt]
+\textit{NAT2} & 8 & Christine B Ambrosone  et al.  2008. PMID:18187392\\[2pt]
+\textit{NBN} & 8 & Lu, J.  et al. 2006. PMID:16714331\\[2pt]
+\textit{POLB} & 8 & Sliwinski, T.  et al. 2006. PMID:17131038\\[2pt]
+\textit{TNFRSF10A} & 8 & Frank, B.  et al. 2005. PMID:15975957\\[2pt]
+\textit{PTCH} & 9 & Chang-Claude J et al. 2003. PMID:12516098\\[2pt]
+\textit{CYP17} & 10 & Wu AH 2003. PMID:12584742\\[2pt]
+\textit{CYP17A1} & 10 & Piller, R.  et al. 2006. PMID:16702327\\[2pt]
+\textit{CYP2C19} & 10 & Werner Schroth  et al.  2007. PMID:18024866\\[2pt]
+\textit{FGFR2} & 10 & Hunter ,et al. 2007. PMID:17529973\\[2pt]
+\textit{MGMT} & 10 & Han, J.  et al. 2006. PMID:16788379\\[2pt]
+\textit{ATM} & 11 & Sommer, S. S.  et al. 2002. PMID:11996792\\[2pt]
+\textit{CCND1} & 11 & Bewick, M. A.  et al. 2006. PMID:17116943\\[2pt]
+\textit{GSTP1} & 11 & Nordgard, S. H.  et al. 2007. PMID:17301692\\[2pt]
+\textit{HRAS} & 11 & Nefedov MD et al. 1990. PMID:2086347\\[2pt]
+\textit{LSP1} & 11 & Easton ,et al. 2007. PMID:17529967\\[2pt]
+\textit{MMP1} & 11 & Przybylowska, K.  et al. 2004. PMID:15149160\\[2pt]
+\textit{PGR} & 11 & Pooley, K. A.  et al. 2006. PMID:16614108\\[2pt]
+\textit{SIPA1} & 11 & Crawford, N. P.  et al. 2006. PMID:16563182\\[2pt]
+\textit{CDKN1B} & 12 & Ma, H.  et al. 2006. PMID:16804901\\[2pt]
+\textit{IFNG} & 12 & Kamali-Sarvestani, E.  et al. 2005. PMID:15890243\\[2pt]
+\textit{IGF1} & 12 & Al-Zahrani, A.  et al. 2006. PMID:16306136\\[2pt]
+\textit{Intergenic} & 12 & Murabito ,et al. 2007. PMID:17903305\\[2pt]
+\textit{LRP1} & 12 & Benes, P.  et al. 2003. PMID:12793904\\[2pt]
+\textit{MDM2} & 12 & Wasielewski, M.  et al. 2006. PMID:17080308\\[2pt]
+\textit{VDR} & 12 & Lundin AC et al. 1999. PMID:10344739\\[2pt]
+\textit{ABCC4} & 13 & Murabito ,et al. 2007. PMID:17903305\\[2pt]
+\textit{BRCA2} & 13 & Golshan, M.  et al. 2006. PMID:16769276\\[2pt]
+\textit{LIG4} & 13 & Bau, D. T.  et al. 2004. PMID:15256476\\[2pt]
+\textit{RB1} & 13 & Berns EM et al. 1995. PMID:7615356\\[2pt]
+\textit{ESR2} & 14 & Gallicchio, L.  et al. 2006. PMID:16808847\\[2pt]
+\textit{MTHFD1} & 14 & Stevens, V. L.  et al. 2007. PMID:17548676\\[2pt]
+\textit{RAD51L1} & 14 & Thomas ,et al. 2009. PMID:19330030\\[2pt]
+\textit{XRCC3} & 14 & Bewick, M. A.  et al. 2006. PMID:17116943\\[2pt]
+\textit{AKAP13} & 15 & Wirtenberger, M.  et al. 2005. PMID:16234258\\[2pt]
+\textit{CYP11A1} & 15 & Zheng, W.  et al. 2004. PMID:15159300\\[2pt]
+\textit{CYP19A1} & 15 & Miyoshi Y et al. 2000. PMID:10956405\\[2pt]
+\textit{CYP1A1} & 15 & Long, J. R.  et al. 2007. PMID:17429315\\[2pt]
+\textit{CYP1A2} & 15 & Kotsopoulos, J.  et al. 2007. PMID:17507615\\[2pt]
+\textit{FBN1} & 15 & Murabito ,et al. 2007. PMID:17903305\\[2pt]
+\textit{RAD51} & 15 & Jakubowska, A.  et al. 2003. PMID:12750242\\[2pt]
+\textit{ERCC4} & 16 & Smith, T. R.  et al. 2003. PMID:14652281\\[2pt]
+\textit{GLG1} & 16 & Kibriya ,et al. 2008. PMID:18463975\\[2pt]
+\textit{MMP2} & 16 & Zhou Y 2004. PMID:14604886\\[2pt]
+\textit{NQO1} & 16 & Menzel, H. J.  et al. 2004. PMID:15138483\\[2pt]
+\textit{SULT1A1} & 16 & Mol Biol (Mosk). 2006. 40(2). 263-70. PMID:16637266\\[2pt]
+\textit{TOX3} & 16 & Thomas ,et al. 2009. PMID:19330030\\[2pt]
+\textit{CASC16} & 16 & Easton ,et al. 2007. PMID:17529967\\[2pt]
+\textit{TNRC9} & 16 & Stacey ,et al. 2007. PMID:17529974\\[2pt]
+\textit{ACACA} & 17 & Sinilnikova, O. M.  et al. 2004. PMID:15333468\\[2pt]
+\textit{AKAP10} & 17 & Wirtenberger, M.  et al. 2006. PMID:16956908\\[2pt]
+\textit{BRCA1} & 17 & Fu, X.  et al. 2007. PMID:17557253\\[2pt]
+\textit{COL1A1} & 17 & Murabito ,et al. 2007. PMID:17903305\\[2pt]
+\textit{ERBB2} & 17 & Tommasi, S.  et al. 2007. PMID:17452776\\[2pt]
+\textit{GH1} & 17 & Endocrine-related cancer. 2005 Dec:12(4):917-28. PMID:16322331\\[2pt]
+\textit{HER2} & 17 & Ameyaw MM et al. 2002. PMID:12166652\\[2pt]
+\textit{HSD17B1} & 17 & Wu AH 2003. PMID:12584742\\[2pt]
+\textit{ITGB3} & 17 & Wang-Gohrke, S.  et al. 2004. PMID:15609125\\[2pt]
+\textit{MPO} & 17 & Ahn, J.  et al. 2004. PMID:15492293\\[2pt]
+\textit{SHBG} & 17 & Cui, Y.  et al. 2005. PMID:15894658\\[2pt]
+\textit{TIMP2} & 17 & Zhou Y 2004. PMID:14604886\\[2pt]
+\textit{TP53} & 17 & Thangarajan Rajkumar  et al.  2008. PMID:18058229\\[2pt]
+Intergenic & 18 & Murabito ,et al. 2007. PMID:17903305\\[2pt]
+\textit{GPX4} & 19 & Nasim Mavaddat  , et al.  Cancer epidemiology, biomarkers \&amp; prevention
+  2009 18(1):255-9. PMID:19124506\\[2pt]
+\textit{KLK3} & 19 & Yang, Q.  et al. 2002. PMID:12168876\\[2pt]
+\textit{PIN1} & 19 & Chan H Han  , et al.  Breast cancer research and treatment  2009 Dec.
+PMID:20033770\\[2pt]
+\textit{TGFB1} & 19 & Thangarajan Rajkumar  et al.  2008. PMID:18058229\\[2pt]
+\textit{UQCRFS1} & 19 & Ohashi Y 2004. PMID:15047214\\[2pt]
+\textit{XRCC1} & 19 & Bewick, M. A.  et al. 2006. PMID:17116943\\[2pt]
+\textit{AURKA} & 20 & Lo, Y. L.  et al. 2005. PMID:15688402\\[2pt]
+\textit{GNAS} & 20 & Otterbach, F.  et al. 2006. PMID:17186357\\[2pt]
+\textit{MMP9} & 20 & Grieu, F.  et al. 2004. PMID:15609121\\[2pt]
+\textit{CBS} & 21 & Stevens, V. L.  et al. 2007. PMID:17548676\\[2pt]
+\textit{COL18A1} & 21 & Balasubramanian, S. P.  et al. 2007. PMID:17587451\\[2pt]
+\textit{CHEK2} & 22 & Meyer, A.  et al. 2007. PMID:17250914\\[2pt]
+\textit{COMT} & 22 & Song, C. G.  et al. 2006. PMID:17217814\\[2pt]
+\textit{CYP2D6} & 22 & Werner Schroth  et al.  2007. PMID:18024866\\[2pt]
+\textit{EP300} & 22 & Wirtenberger, M.  et al. 2006. PMID:16704985\\[2pt]
+\textit{GSTT1} & 22 & Mitrunen, K.  et al. 2001. PMID:11303592\\[2pt]
+\textit{AR} & X & Yu H et al. 2000. PMID:10817350\\[1.5pt]\hline\hline
+
+\label{genes:  cancer} 
+\end{longtable}
+\end{center}
+\end{landscape}
+
+\newpage
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{\textbf{Top $20$ ranked sub-networks from dmGWAS \cite{jia} using breast cancer GWAS data, and the related enrichment result from databases KEGG using ENRICH-NET \cite{erich}. Fisher exact tests (Fisher q-value) estimate the significance of the gene set (genes within a sub-network) overlap between the pathway and the ancGWAS sub-network. Zn is the normalized of Zscore}}
+% use packages:   array
+\centering
+\scalebox{0.85}{
+\begin{tabular}{ccccccc}\hline\hline
+\textbf{Net-work gene hub}&\textbf{Zn}&\textbf{Pathways}&\textbf{Fisher q-value}&\textbf{Gene set size}&\textbf{Pathway size}&\textbf{Number of genes overlapping} \\[2pt] \hline
+\textit{ERAS}&11&\textbf{Fc epsilon RI signaling pathway}&$8.50e-05$&13&77&5 \\[2pt]
+\textit{TNS4}&11.01&\textbf{Dorso ventral axis formation}&0.01&12&24&2 \\[2pt]
+\textit{APBB2}&11.16&\textbf{Dorso ventral axis formation}&0.019&12&24&2 \\[2pt]
+\textit{ALCAM}&10.97&\textbf{Dorso ventral axis formation}&0.02&12&24&2 \\[2pt]
+\textit{ANKS1B}&11.14&\textbf{Dorso ventral axis formation}&0.02&12&24&2 \\[2pt]
+\textit{ATP5C1}&11.04&\textbf{Dorso ventral axis formation}&0.02&13&24&2 \\[2pt]
+\textit{CLTCL1}&11.06&\textbf{Dorso ventral axis formation}&0.02&11&24&2 \\[2pt]
+\textit{CMTM8}&11.1&\textbf{Dorso ventral axis formation}&0.02&12&24&2 \\[2pt]
+\textit{EREG}&11.01&\textbf{Dorso ventral axis formation}&0.02&12&24&2 \\[2pt]
+\textit{SH2D2A}&10.94&\textbf{Dorso ventral axis formation}&0.02&12&24&2 \\[2pt]
+\textit{SH2D3A}&10.94&\textbf{Dorso ventral axis formation}&0.02&12&24&2 \\[2pt]
+\textit{SH3BGRL}&10.96&\textbf{Dorso ventral axis formation}&0.02&12&24&2 \\[2pt]
+\textit{SH3BGRL3}&10.98&\textbf{Dorso ventral axis formation}&0.02&12&24&2 \\[2pt]
+\textit{SLC5A1}&10.98&\textbf{Dorso ventral axis formation}&0.02&12&24&2 \\[2pt]
+\textit{EFNA5}&11.04&\textbf{Primary immunodeficiency}&0.12&13&33&2 \\[2pt]
+\textit{TNFRSF6B}&10.92&\textbf{Primary immunodeficiency}&0.15&14&33&2 \\[2pt]
+\textit{CELSR2}&10.97&\textbf{Type II diabetes mellitus}&0.16&13&46&2 \\[2pt]
+\textit{CKAP5}&10.95&\textbf{Type II diabetes mellitus}&0.16&13&46&2 \\[2pt]
+\textit{F2RL2}&11&\textbf{Type II diabetes mellitus}&0.19&13&46&2 \\[2pt]
+\textit{MPZL1}&10.95&\textbf{Type II diabetes mellitus}&0.19&13&46&2 \\[1.5pt]\hline\hline
+\end{tabular}}
+\label{tab:dmGcancer}
+\end{table}
+\end{landscape}
+	
+\newpage
+
+\section*{Text S1: Benjamini and Hochberg False Discovery}
+From the summary statistic p-values based on both the Stouffer-Liptak \cite{lipt} and Fisher's Combined probability \cite{fish,hess} methods, correct the statistic p-values as follows,
+
+\begin{itemize}
+\item [(1)]Rank the p-value	 of each gene in order from the smallest to the largest.
+\item [(2)]Multiply the largest p-value by the number of genes in test.
+\item [(3)]Take the second largest p-value and multiply it by the total number of genes in gene list divided by its rank. If less than $0.05$, it is significant. Corrected $p-value = p-value*\left(\frac{n}{n-1}\right) < 0.05$, if so, gene is significant.
+\item [(4)] Take the third p-value and proceed as in step 3: Corrected $p-value = p-value*\left(\frac{n}{n-2}\right) < 0.05$, if so, gene is significant. 
+\end{itemize}
+Repeat step (1) to (4).
+
+\end{document}
+

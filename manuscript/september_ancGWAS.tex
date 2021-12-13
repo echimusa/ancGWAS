@@ -1,0 +1,792 @@
+	% Template for PLoS
+% Version 1.0 January 2009
+%
+% To compile to pdf, run:
+% latex plos.template
+% bibtex plos.template
+% latex plos.template
+% latex plos.template
+% dvipdf plos.template
+
+\documentclass[10pt]{article}
+
+% amsmath package, useful for mathematical formulas
+\usepackage{amsmath}
+%\usepackage{algorithm}
+\usepackage{longtable}
+\usepackage{multicol,multirow}
+\usepackage{color}
+\usepackage{colortbl}
+\usepackage[table]{xcolor}
+\definecolor{tableShade}{gray}{0.9}
+\usepackage[section]{placeins}
+\usepackage{float}%
+%\usepackage{mdframed}
+%\usepackage{lipsum}
+% amssymb package, useful for mathematical symbols
+\usepackage{amssymb}
+\usepackage{url}
+% graphicx package, useful for including eps and pdf graphics
+% include graphics with the command \includegraphics
+\usepackage{graphicx,lscape}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+\usepackage{color} 
+
+% Use doublespacing - comment out for single spacing
+%\usepackage{setspace} 
+%\doublespacing
+
+
+% Text layout
+\topmargin 0.0cm
+\oddsidemargin 0.5cm
+\evensidemargin 0.5cm
+\textwidth 16cm 
+\textheight 21cm
+
+% Bold the 'Figure #' in the caption and separate it with a period
+% Captions will be left justified
+\usepackage[labelfont=bf,labelsep=period,justification=raggedright]{caption}
+
+% Use the PLoS provided bibtex style
+\bibliographystyle{plos2009}
+
+% Remove brackets from numbering in List of References
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+
+% Leave date blank
+\date{}
+
+\pagestyle{myheadings}
+%% ** EDIT HERE **
+\newcommand\example[1]{\hspace{10mm}\framebox{#1}}
+
+
+%% ** EDIT HERE **
+%% PLEASE INCLUDE ALL MACROS BELOW
+
+%% END MACROS SECTION
+
+\begin{document}
+
+% Title must be 150 characters or less
+\begin{flushleft}
+{\Large
+\textbf{ancGWAS: a Post Genome-wide Association Study Method for Interaction, Pathway, and Ancestry Analysis in Homogeneous and Admixed Populations}
+}
+% Insert Author names, affiliations and corresponding author email.
+\\
+\vskip5mm
+Emile R. Chimusa$^{1,\ast}$, 
+Mamana Mbiyavanga$^{1,2}$, 
+Gaston K. Mazandu$^{1,2}$,
+Nicola J. Mulder$^{1,\ast}$
+\\
+\vskip5mm
+$^{\bf{1}}$Computational Biology Group, Department of Clinical Laboratory Sciences, Institute of Infectious Disease and Molecular Medicine, University of Cape Town, Medical School, 7925 Observatory, Cape Town, South Africa.\\
+$^{\bf{2}}$African Institute for Mathematical Sciences,7945 Muizenberg, Cape Town, South Africa.
+\\
+\vskip5mm
+$^{\ast}$Contact e-mail: emile@cbio.uct.ac.za and Nicola.Mulder@uct.ac.za
+\end{flushleft}
+
+% Please keep the abstract between 250 and 300 words
+\section*{Abstract}
+
+Despite numerous successful Genome-wide Association Studies (GWAS), detecting variants that have low disease risk still poses a challenge. GWAS may miss disease genes with weak genetic effects or strong epistatic effects due to the single-marker testing approach commonly used. GWAS may thus generate false negative or inconclusive results, suggesting the need for novel methods to combine effects of single nucleotide polymorphisms within a gene to increase the likelihood of fully characterizing the susceptible gene. We developed ancGWAS, an algebraic graph-based centrality measure that accounts for linkage disequilibrium in identifying significant disease sub-networks by integrating the association signal from GWAS data sets into the human protein-protein interaction (PPI) network. In the same way, ancGWAS can identify disease associated sub-networks underlying ethnic differences by incorporating both the association signal and the ancestry for recently admixed populations into the human PPI network. From the simulation of interactive disease loci in the simulation of a complex admixed population, as well as pathway-based GWAS simulation, we demonstrate that ancGWAS outperformed current approaches and holds promise for deconvoluting the interactions between genes underlying the pathogenesis of complex diseases. We validate ancGWAS using an association study result from a breast cancer data set. Our results yield a novel central breast cancer sub-network of the human interactome implicated in the \textit{proteoglycan syndecan-mediated signaling events pathway} that is enriched with $15$ previously identified breast cancer genes. It is known to play a major role in mesenchymal tumor cell proliferation and tumors such as multiple myeloma or breast adenocarcinoma, known to have an elevated syndecan-1. This result provides further insights into breast cancer pathogenesis.
+
+% Please keep the Author Summary between 150 and 200 words
+% Use first person. PLoS ONE authors please skip this step. 
+% Author Summary not valid for PLoS ONE submissions.   
+%\section*{Author Summary}
+\vskip2mm
+\section*{Availability:}
+The ancGWAS package and documents are available at \url{http://www.cbio.uct.ac.za/ancGWAS.}
+\vskip2mm
+\section*{Author Summary}
+We introduce ancGWAS, a post GWAS method to identify significant disease sub-networks by integrating the GWAS association signal into the human protein-protein interaction (PPI) network. In addition, ancGWAS can identify disease sub-networks underlying ethnic differences by integrating both the association signal and the local ancestry for admixed populations into the human PPI network. ancGWAS accounts for the correlation that exists between SNPs within a gene and genes within pathways and the difference in number of SNPs among genes, as well as in sub-networks. ancGWAS introduces flexibility in estimating gene- and sub-network specific ancestry, and tests for signals of case-control difference in ancestry and unusual excess/deficiency of ancestry at the gene and sub-network level, which, to our knowledge, is a new contribution in post-GWAS methods. We validated ancGWAS through different simulation scenarios and demonstrated that it has potential for comprehensively examining interactions between genes underlying the pathogenesis of genetic diseases by leveraging the topological structure of the network. ancGWAS  highlights the value of identifying the ancestry of pathways associated with a disease, which may be useful in understanding the pathogenesis and susceptibility to genetic diseases in admixed populations.
+\vskip2mm
+
+\section*{Introduction}
+
+Genome-wide Association Studies (GWAS) have successfully identified genetic variants in human populations, however many authors have pointed out that GWAS may not detect genetic variants with low or moderate risk, which don't reach the intrinsic genome-wide significance cut-off of $P < 5.00e-08$ \cite{peng,ott,rita}. Today, only a few common variants have been linked to disease and the associated loci explain only a small fraction of the genetic risk \cite{rita,ott,wu3,wu4,wu5,wu6}. Because the effect of a gene polymorphism may be small, GWAS may fail to detect a significant signal if the effect of a variant in another gene is not taken into account \cite{rita,wum,wuka,wu3,wu4,wu5,wu6}. Since complex diseases are typically caused by multiple factors, including multiple genes, through gene-gene interactions and gene-environment interactions \cite{wum,wuka,wu3,wu4,wu5,wu6}, single-marker-based analysis in GWAS may generate false negative and inconclusive results \cite{peng,jia,ott}. Currently the challenges facing GWAS include (1) the translation of associated loci into suitable biological hypotheses for further investigation in the laboratory, (2) the well-known problem of missing heritability \cite{manio}, and (3) the understanding of how multiple modestly-associated loci within genes interact to influence a phenotype \cite{peng,jia,rita}. 
+
+Detecting the underlying genetic etiology of the disease can be difficult, as it may involve a single gene or interactions between two or more genes. Recent studies have demonstrated that there is a relationship between gene function and phenotype, and that functionally-related genes are more likely to interact \cite{peng,jia,ott,philp,wuka,wu3,wu4,wu5,wu6}. Genes can influence each other at the level of enhancement or hindrance \cite{philp}, and this effect can occur directly at the genomic level where a gene could code for a protein that prevents transcription of another gene. Alternatively, the effect can be at the phenotypic level, where a pair of genes can interact to produce a specific phenotype \cite{ott,philp,wuhr,barazi}. Interactions can play critical roles in the cause of disease, therefore standard GWAS analysis alone is insufficient to examine the complex genetic structure of complex diseases \cite{barazi}. In the past several years, researchers have attempted to identify interactions, with methods ranging from evolutionary genetic studies \cite{philp,kimur}, systems biology studies of model microbes \cite{segre} and quantitative genetic studies of inbred model organisms, to linkage \cite{iong} and association studies in human populations \cite{wum,wu6,wu5,wu4,wu3,wuka,wuhr}. The challenge of gene-gene interaction methods is that the large number of multi-locus genotype combinations generated from large numbers of genetic variants may lead to the so-called 'curse of dimensionality' problem \cite{bellm}. 
+
+Recently, gene-set based methods have been used to examine gene sets, particularly in the form of biological pathways or grouping genes by cellular functions or functional groups, using GWAS datasets \cite{path,dushl}. These methods search for significantly enriched gene sets collected from predefined canonical pathways or functional annotations such as Gene Ontology (GO) terms. However, these approaches have limitations, such as (1) the requirement for strong disease-specific background knowledge, (2) the incomplete annotation of pathways or GO annotations in the current knowledgebase \cite{philp}, and (3) the results might be limited to \textit{a priori} knowledge, thus, making it difficult to identify a meaningful combination of genes \cite{ruao}. 
+
+Because risk genes may differ in different individuals, but may still lie in the same pathway \cite{barazi,rita,peng}, the protein-protein interaction (PPI) network based approach was recently introduced, and applied to GWAS data \cite{jia,ott,barazi}. The approach has been shown to largely overcome some of the limitations because it allows flexibility in setting the components of a gene set \cite{peng,jia,rita,marlob}. Examining the combined effects of genes by detecting genetic signals beyond single gene polymorphisms may increase our ability to fully characterize the susceptible genes and unravel the pathogenesis of disease \cite{peng,jia,rita,marlob}. The network based approach, such as in \cite{jia,barazi,dushl,ott}, has been applied to GWAS data for multiple sclerosis \cite{barazi} and breast cancer \cite{jia}. These network based approaches are mostly based on combining p-values from standard GWAS for correlated SNPs into an overall significance level for a gene, and combining p-values for the genes in a pathway into an overall significance level to investigate the association of a pathway with the disease \cite{jia,ott}. However, in many cases, SNPs within genes and genes within pathways are correlated, and these methods do not account for this dependency, but rather assume genes or SNPs to be independent and uniformly distributed under a null hypothesis. The violation of dependent assumptions in these methods may generate erroneous results. In addition, most of these network-based approaches do not account for topological properties of biological networks, which may lead to meaningless sub-networks \cite{add1}.
+
+Here, we present an algebraic graph-based method (ancGWAS) that leverages the topological analysis of the PPI network to (1) identify hub genes, and use their topological properties, (2) identify the most meaningful and significant sub-networks, and (3) to account for the correlation that exists between SNPs within or between genes and genes within pathways. ancGWAS integrates the association signal from standard GWAS data, the local ancestry for admixed populations and the SNP LD into the human PPI network. It introduces flexibility in estimating gene- and sub-network-specific ancestry using the inferred local ancestry from ancestry inference approaches such as in \cite{winp,yael,painter,comt,pcadm,chmulti}. When ruling out the gene- and sub-network-specific ancestry, the proposed method corrects for possible bias in the inferred local ancestries obtained from current approaches of local ancestry inference. In addition, it tests for case-control unusual difference in ancestry at the gene and sub-network level using the corrected local ancestry of admixed populations. From different simulation results, we demonstrate that ancGWAS holds promise for comprehensively examining the interactions between genes underlying the pathogenesis of genetic diseases and also underlying ethnic differences. In addition, we validated ancGWAS using a previously inconclusive GWAS result from  postmenopausal women of European ancestry with invasive breast cancer \cite{hunter}. Our result yielded an interesting central breast cancer sub-network of the human interactome implicated in the proteoglycan syndecan-mediated signaling events pathway.
+
+
+% Results and Discussion can be combined.
+\section*{Results}
+
+\subsection*{Evaluating ancGWAS}
+
+Firstly, we evaluated ancGWAS using the simulated data of a $4$-way admixed population within two disease loci associated with the \textit{IL23R} gene in the chromosomal region $1p31.3$ and two other disease loci associated with the \textit{SLC2A1} gene in the chromosomal region $1p34.2$ (see Materials and Methods). We conducted the association analysis on the causal simulated data set by applying EMMAX \cite{emax1}, which accounts for both population stratification and hidden relatedness. EMMAX could not identify any significant SNPS, and failed to significantly identify the simulated disease loci at SNPs \textit{rs841404}, \textit{rs790633}, \textit{rs2297977} and \textit{rs6664119} (Table \ref{tab:gwasSIM}). To try to recover the association signal that did not reach the intrinsic genome-wide significance cut-off $p$-value of $ 5.00e-08$ in the standard GWAS, we combine the effects of all SNPs in a particular gene using the Stouffer-Liptak statistical and Fishers combined probability tests. We adjusted both statistics using the Benjamini-Hochberg \cite{benj} false-discovery correction methods (see Supplementary Text S1). The results in Table \ref{tab:gwasSIM} are the top $22$ moderate/significant genes from the ancGWAS analysis where we combined the effect of several SNPs within a gene to refine the association signal; accounting for the difference in the number of SNPs between different genes \cite{sizeg} and adjusting for the $p$-value dependencies. The results in both Figure 1 and Table \ref{tab:gwasSIM} show the correlation between the distribution of $p$-values and its $q$-values (the false discovery rate), indicating there was no evidence of type I error. Interestingly, the simulated disease gene \textit{SLC2A1} and other genes interacting with \textit{SLC2A1} or \textit{IL23R}, which were on the boundary (or not) of genome-wide significance from the standard GWAS (Table \ref{tab:gwasSIM}), are now significant after combining effects of different SNPs within a gene. These results demonstrate the power of examining the combined effects of genes by detecting genetic signals beyond a single SNP. 
+
+We additionally analysed the ancestry of the GWAS data set from causal simulation of a 4-way admixed population and compared it to the true locus-specific ancestry generated from that particular simulation. We noted from our simulation that the ancestry specific minor allele frequencies from the correct proxy ancestral populations \cite{gala,chims1} of the admixed population may serve to correct the local ancestry bias (see Materials and Methods) along the genome of the admixed individuals. We tested for unusual case-control difference in ancestry under the null hypothesis using a modified Wilcoxon signed-rank statistic. The reported Wilcoxon $p$-values and its $q$-values in Table \ref{tab:gwasSIM} suggest a significant signal of unusual difference in YRI ancestry from case and control samples at the $\textit{IL23R}$ ($57\%$, p-value = $5.21e-08$, q-$value=0.0005$), consistent with our simulation framework. 
+
+To fully characterize the susceptible genes and determine the genetic structure of the simulated disease at the biological pathway level, we conducted sub-network-specific association analysis using ancGWAS. To this end, we implemented different methods described in the Material and Methods section for constructing the sub-network. These methods give similar results, therefore for simplicity, all our reports are based on the z-score method to construct the LD-weighted network. A topological test was performed on the constructed LD-weighted network of $21,429$ pair-wise gene-gene interactions. We assessed whether there is an opportunity for using topological properties of the network as a factor for clustering. Figure 2 shows that the network exhibits scale-free topology, meaning that the degree distribution of genes approximates a power law $(P\left(k\right)=k^{-\gamma})$, where $\gamma \approx 2.19$ is the degree exponent obtained by fitting the model using the least-square approach. This indicates that most genes have few interacting partners but some have many and are crucial for the robustness of the network. Figure 2 shows that the network has a small world property, suggesting that the spread of information in the network is achieved through an average of seven steps, which corresponds to the average shortest path length in the network. To determine whether we can use topological properties to break down our network into sub-networks, we ran the searching algorithm described in Materials and Methods. We found all the hubs of the networks and successively, the betweenness centrality, the closeness centrality and the eigenvector centrality measures for each node were computed. We computed the cut-off for each centrality measure, and the intersection of the top genes from each measure were considered to be the set of central nodes. 
+
+Similarly to the gene level analysis above, we assessed the significance of each sub-network using the Stouffer-Liptak statistical and Fishers combined probability tests. We adjusted the latter statistics using the Benjamini-Hochberg false-discovery correction. Since both the Stouffer-Liptak statistical and Fishers combined probability tests produce similar results, we reported only on the Stouffer-Liptak statistical test. Table \ref{tab:mod} displays the top $20$ sub-networks ranked by $p$-values and the overlap of each sub-network with known biological pathways. $11$ genes, including our simulated disease-genes and their interacting genes, overlap between the top sub-network and the metabolism pathway (Table \ref{tab:mod}). Because the hubs of these top $20$ sub-networks (Table \ref{tab:mod}) are connected, we derived a central sub-network, which is the sub-network of the top $20$ sub-networks (new network) that has the most connected hubs and overlapping genes. We applied enrichment analysis on the central sub-network (Figure 3) as described in Materials and Methods, and it was found to be associated with the \textit{Integrin family cell surface interactions} pathway (z-score of overlap, $Z\_w$ = $1.6$). The overlap of the central sub-network and this pathway includes our simulated disease genes (\textit{SLC2A1} and \textit{IL23R}) and some of their interacting genes. Supplementary Tables 1 and 2 display sub-network-specific ancestry proportions; and the Wilcoxon signed-rank statistical test of unusual case-control difference in ancestry. As expected, again the results for this causal simulation data set demonstrate evidence of unusual case-control difference in YRI ancestry in one of those top $20$ sub-networks, consistent with the simulation. In Figure 3, we plotted the central sub-network with ancestry proportions. The edge (\textit{SLC2A1},\textit{UBC}) is the hub of the central sub-network (Figure 3) and both genes are interacting \cite{wu,cowy}. This result highlights the benefit of characterizing susceptible genes beyond standard GWAS. Taken together, through the simulation of a $4$-way admixed population, ancGWAS demonstrated the ability to elucidate the interactions between genes underlying the pathogenesis of a simulated complex disease that were not detected in a standard GWAS analysis. 
+
+Next, to determine whether the ancGWAS approach is calibrated, we evaluated ancGWAS using a null simulated data set of a $4$-way admixed population (Materials and Methods). We conducted the association analysis using this simulated data by applying EMMAX. As expected, from the top $19$ SNPs displayed in Supplementary Table 3, genome-wide significance was not observed. We thus, applied ancGWAS to the resulting GWAS data set, but when combining effects of different SNPs within a gene, the result was still not significant (Supplementary Table 3), although the top genes are associated with the top SNPs observed in the standard GWAS analysis. In addition, no significant results were observed at the sub-network level (Supplementary Table 4). At both gene and sub-network levels (Supplementary Table 3 and Table 4), the Wilcoxon signed-rank statistical test of unusual case-control difference in ancestry did not show any statistics significance. Overall, both the causal and null simulation of a 4-way admixed population suggest that the approaches developed in ancGWAS protect against false positives, and can unravel signals of ancestry difference in disease risk. 
+
+Finally, we evaluated ancGWAS using a simulated pathway-based GWAS data set. The standard single-marker-based association analysis using EMMAX in Supplementary Table 5, failed to significantly identify our three weak simulated interactive disease-associated loci with very weak genetic effects  (\textit{rs2834287}, \textit{rs507238}, \textit{rs2250305}). Thus, we used a pathway-based approach to analyse the combined effect of all SNPs within a gene and genes within a pathway. To detect the simulated interactive disease genes with very weak genetic effects in the up-regulated aged mouse hypothalamus pathway, we applied ancGWAS to the GWAS data set. We retained the resulting top $20$ sub-networks, and for each sub-network, we computed the number of genes overlapping between each sub-network and the up-regulated aged mouse hypothalamus pathway ($AGED\_MOUSE\_HYPOTH\_UP$), which is our simulated pathway. Table \ref{tab:path} displays the result of ancGWAS, which was able to identify the up-regulated aged mouse hypothalamus pathway among the $20$ top sub-networks.
+
+
+\subsection*{Application to CGEMS Breast Cancer Data}
+\label{ancPathc}
+
+We conducted an association analysis using data from the CGEMS Breast Cancer study, which included $1145$ postmenopausal women of European ancestry with invasive breast cancer \cite{hunter} and $1,142$ controls. We used the typed data set and additionally imputed missing SNPs \cite{marchi} in the chromosomal region $10q26$ that harbours the \textit{FGFR2} gene identified in \cite{hunter} using EMMAX (Materials and Methods). Our result did not yield any significant association signal with breast cancer (Supplementary Table 6). To account for possible interacting cancer disease SNPs and moderate risk that could not reach the genome-wide significance cut-off in the standard GWAS (Supplementary Table 6); we applied ancGWAS to the resulting GWAS data set containing $528,169$ SNPs. After mapping SNPs to genes, $23,877$ genes were retained in ancGWAS. We retained the top $20$ sub-networks and performed enrichment analysis on each sub-network using the approach described in Materials and Methods. We assigned the most significant pathway to each sub-network. The z-score is based on the binomial proportions test \cite{berge} of significance between known biological pathways and a given sub-network. Interestingly, the results in Table \ref{tab:subcancer2} include sub-networks involved in the pathways that indeed overlap with previously identified breast cancer genes. Moreover, we observed that the $20$ top sub-networks obtained overlap each other, and the hubs are connected to each other. This allowed us to search for the most important and central sub-network (Figure 4), which has the most connected hubs and overlapping genes between the top $20$ sub-networks. For ease of presentation, we reduced the resulting sub-network by excluding those genes with less than three edges and applying a recursive approach. We applied enrichment analysis to this central sub-network. $63$ genes from the central sub-network overlapped those from the proteoglycan syndecan-mediated signaling events pathway (z-score of overlap, Z$\_w$= $12.9$). The overlap of the central sub-network (Figure 4) and this pathway includes $15$ known or previously identified breast cancer genes including \textit{BRCA1}, \textit{TGFBR1}, \textit{BRCA2}, \textit{FANCA}, \textit{MTR}, \textit{MRPL19}, \textit{CASP8}, \textit{IGFBP3}, \textit{IGFBP1}, \textit{VEGFA}, \textit{IGF1}, \textit{ATR}, \textit{XRCC3}, \textit{FGFR2}, \textit{CHEK2}. In Figure 4, we plotted the central sub-network which is significantly enriched with genes from the \textit{proteoglycan syndecan-mediated signaling events pathway}. This pathway is emerging as a central player in modulating cellular signaling in embryonic development, tumorigenesis and angiogenesis; and affects mesenchymal tumor cell proliferation, adhesion, migration and motility \cite{breasta,breastb,breastd}. Previous studies have shown that the cell-associated proteoglycans provide highly complex and sophisticated systems to control interactions of extracellular cell matrix components and soluble ligands with the cell surface \cite{breasta,breastb,breastc,breastd}. Moreover, some tumors, including multiple myeloma or breast adenocarcinoma are known to have an elevated syndecan-1 level \cite{breastb}. Increased expression of proteoglycan syndecan in mesenchymal tumors has recently been reported to change the tumor cell morphology to an epithelioid direction, whereas downregulation results in a change in shape from polygonal to spindle-like morphology \cite{breastc,breastd}. This is an important result, illustrating the benefit of incorporating both the association signal from a standard GWAS and the human PPI network for testing the combined effects of SNPs and searching for significantly enriched sub-networks for complex diseases.
+
+\section*{Comparing ancGWAS with dmGWAS}
+
+We compare ancGWAS to an existing pathway-based method, dmGWAS \cite{jia}, to assess its improved ability to identify a disease pathway. The choice of dmGWAS as a comparison is motivated by the fact that it uses the same strategy for the analysis of GWA study data sets, namely the network-based approach, in integrating GWAs signals into the human PPI network. This enables a reasonable comparison between these two approaches, though the final results of ancGWAS could also have been compared to any other existing pathway-based method for analysis of GWAS data sets. The dmGWAS method uses the dense module searching algorithm for identifying modules or sub-networks in massive networks. Their searching algorithm is based on two parameters: (1) the numerical parameter d, is the constraint distance for which, any node with a shortest path to another node greater than this cut-off, will not be considered as a interacting neighbour, (2) the parameter $r$, which obstructs restriction on the score of the module and this has a considerable effect on the result. The accuracy and performance of dmGWAS relies on the choice of these parameters \cite{jia}. Supplementary Table 7, provides a comparison of technical components implemented in both ancGWAS and dmGWAS.
+
+Because dmGWAS was not designed for admixed populations, we firstly applied both ancGWAS and dmGWAS to the simulated pathway-based GWAS data set used above to compare their ability to detect the simulated interactive disease genes with very weak genetic effects in the up-regulated aged mouse hypothalamus pathway. We retained the top $20$ sub-networks from each approach. For each sub-network from both approaches, we computed the number of genes overlapping between each sub-network and the up-regulated aged mouse hypothalamus pathway, which is our simulated pathway. Although both ancGWAS and dmGWAS identified the up-regulated aged mouse hypothalamus pathway among the $20$ top of sub-networks, from both the number of genes overlapping each sub-network and the corresponding pathway, and  overlapping genes from each sub-network with the up-regulated aged mouse hypothalamus pathway (Table \ref{tab:path}), ancGWAS performed better than dmGWAS. The advantage of ancGWAS may be based on the usage of the topological structure of the network and network communication to break down the network into different sub-networks.
+
+In a second comparison, we applied both ancGWAS and dmGWAS to the breast cancer GWAS data set containing $528,169$ SNPs. After mapping SNPs to genes, $23,877$ and $23,711$ genes were retained in ancGWAS and dmGWAS, respectively. The difference lies in slightly different methods for mapping SNPs to genes. From the top $20$ sub-networks obtained from both ancGWAS and dmGWAS, we performed enrichment analysis as above and assigned the most significant pathway to each sub-network. Comparing the result from the two methods in Table \ref{tab:subcancer2}, the results from ancGWAS include sub-networks involved in the pathways that overlap with previously identified breast cancer genes. The results for the breast cancer data obtained from dmGWAS were in contrast with those published in \cite{jia}, and the number of genes overlapping with the top scoring pathway and each of its generated top $20$ sub-networks (Table \ref{tab:subcancer2}) was smaller than those obtained from ancGWAS. To see in depth how these top sub-networks obtained from both ancGWAS and dmGWAS overlap with previously identified breast cancer genes, we collected a total of $129$ breast cancer genes (Supplementary Table 8) from the GAD database (\url{http://geneticassociationdb.nih.gov/}). We computed the number of overlapping genes between the set of known breast cancer genes and each sub-network from ancGWAS and dmGWAS. Just a single gene was repeatedly overlapping between sub-networks generated from dmGWAS and the set of known breast cancer genes while ancGWAS overlapped several known associated breast cancer genes (Supplementary Table 9 and Table \ref{tab:subcancer2}). This suggests that ancGWAS performs better than dmGWAS and has the advantage of leveraging the topological analysis of the PPI network in order to (1) provide a better explanation of hub protein, and strengthens the relationship between the role of the hubs and their topological properties, (2) identify the most meaningful and significant sub-networks and (3) account for the correlation that exists between SNPs within or between genes and genes within pathways.
+
+\section*{Discussion}
+
+%We introduced ancGWAS, a post GWAS method based on an algebraic graph-based approach to identify the most significant sub-networks \textcolor{red}{relevant to a disease, those} underlying ethnic difference in complex disease risk in recently admixed populations. ancGWAS integrates the association signal from standard GWAS data, the local ancestry (in the case of an admixed population) obtained from current methods of local ancestry inference \cite{winp,yael,painter,comt,pcadm,chmulti} and the polymorphism LD into the human PPI network (Figure 5). Our method accounts for the correlation that exists between SNPs within a gene and genes within pathways, as well as the $p$-value dependency; and introduces flexibility in estimating gene-specific and sub-network-specific ancestry. When computing the gene and sub-network-specific ancestry from the locus-specific ancestry, the proposed method corrects for possible bias in the inferred locus-specific ancestries obtained from current approaches of local ancestry inference \cite{gala,chims}. In addition, our method tests for the case-control unusual difference in ancestry at gene and sub-network levels from the corrected local ancestry and also unusually large deviations in gene/sub-network ancestry proportions in an admixed population. 
+We introduced ancGWAS, a post GWAS method based on an algebraic graph-based approach that leverages the topological analysis of the PPI network to (1) identify hub genes, and use their topological properties, (2) identify the most meaningful and significant genes or sub-networks relevant to a disease and those underlying ethnic difference in a disease risk in case of admixed populations, and (3) account for the correlation that exists between SNPs within or between genes and genes within pathways. ancGWAS integrates the association signal from standard GWAS data, the local ancestry for admixed populations and the SNP LD into the human PPI network. Our method introduces flexibility in estimating gene- and sub-network-specific ancestry using the inferred local ancestry from ancestry inference approaches such as in \cite{winp,yael,painter,comt,pcadm,chmulti}. When ruling out the gene- and sub-network-specific ancestry, the proposed method corrects for possible bias in the inferred local ancestries obtained from current approaches of local ancestry inference \cite{gala,chims}. In addition, it tests for case-control unusual difference in ancestry at the gene and sub-network level using the corrected local ancestry of admixed populations.
+
+Our results from both the null and causal simulation of a 4-way admixed population, have demonstrated the advantage of mapping ancestry and identifying candidate ancestry difference (candidate peaks) at gene/sub-network level. Similarly, it should be straightforward to also detect candidate peaks of unusually large deviations in gene/sub-network ancestry proportions (see equation \ref{eq:3.1}, also implemented in ancGWAS). Our current method cannot perform allelic tests of association directly from the data, controlling for differences in gene/sub-network-specific ancestry (candidate peaks), as this can be very challenging due to gene-gene interactions (or considering sub-networks of iterative genes). This would mean a large number of multi-locus genotype combinations generated from large numbers of genetic variants, leading to the so-called 'curse of dimensionality' problem \cite{bellm}. Inferring accurate local ancestry is also challenging \cite{gala,chims} and currently we do not have access to a phenotypic data set of an admixed population, otherwise it would be interesting to apply the proposed approach to such a population. However, we validated ancGWAS through different simulation scenarios, including a null simulation with no causal loci in the simulation of an admixed population, a causal simulation of disease loci in the simulation of an admixed population and simulation of a pathway-based association study using a homogeneous population. From our results, the ancGWAS statistical methods are appropriately calibrated, can control both type I and II errors and hold promise for comprehensively examining interactions between genes underlying the pathogenesis of genetic diseases and also underlying ethnic differences. In addition, our results from the simulation and the data set of post-menopausal women of European ancestry with invasive breast cancer, demonstrated that ancGWAS outperformed an existing method, dmGWAS (Tables \ref{tab:subcancer2} and \ref{tab:path} and Supplementary Figure 1). The out-performance of ancGWAS may be due to the fact that our method leverages the correlation that exists among SNPs within a gene and genes within a pathway and accounts for the topological structure of the network. Importantly, ancGWAS was able to recover weak and moderate association signals at the gene and pathway level. It also refined the weak signal of simulated disease SNPs, which failed in the single-marker-based testing approach commonly used in standard GWAS to identify significant and enriched sub-networks. 
+
+In the application of ancGWAS to the breast cancer GWAS data, we generated $20$ top sub-networks that were not only significantly enriched in, but also shown to have a role in cancer immunopathogenesis. The enrichment-test revealed that the most significant sub-networks overlapped each other and were connected to a central sub-network, which is mostly implicated in the \textit{proteoglycan syndecan-mediated signaling events pathway}. This pathway plays a major role in modulating cellular signaling in embryonic development, tumorigenesis, angiogenesis and in affecting the mesenchymal tumor cell proliferation, adhesion, migration and motility \cite{breasta,breastb,breastd}. Furthermore, it is known to have effects on heparan sulfate biosynthesis in mesenchymal tumors and to provide a multitude of possibilities for novel therapeutic approaches and targeted therapies \cite{breastb,breastd}. This novel central breast cancer sub-network of the human interactome was enriched with interesting breast cancer biological pathways, which included genes previously identified to be associated with breast cancer. This candidate breast cancer central sub-network (Figure 4) also potentially provides further insights into breast cancer pathogenesis. In addition, the convergence of SNP signals to related cancer sub-networks and candidate breast cancer genes supports our hypothesis of leveraging weakly/moderately associated signals from GWAS by testing the combined effects of SNPs and searching for significantly enriched sub-networks. 
+
+Although gene-gene interactions (or considering sub-networks of iterative genes) may use a large number of multi-locus genotype combinations generated from large numbers of genetic variants leading to the so-called 'curse of dimensionality' problem \cite{bellm}, the method implemented in ancGWAS highlights the value of identifying the pathways associated with a disease, which may be useful in understanding the pathogenesis of and susceptibility to genetic diseases in admixed populations.
+
+ 
+\section*{Materials and Methods}
+
+\subsection*{Assignment of ancestry, $p$-values and LD from SNPs to genes}
+
+SNPs, their associated local ancestry, ancestral population minor allele frequencies and GWAS $p$-values are assigned to a given gene if they are located within the gene's downstream or upstream region. The dependency between genes is complex and is due to many factors \cite{lith,wu,peng} between closely located SNPs. Linkage disequilibrium can be observed due to functional interactions where even genes from different chromosomes can jointly confer an evolutionary selected phenotype or can affect the viability of potential offspring. To capture such information and to exploit the topological structure of PPI network for identifying informative sub-networks, we weight the PPI network with LD estimated from genotype data of the population under study. This is accomplished by computing an overall LD from pairwise LD between SNPs at each given pair of interacting genes. In this manner, the PPI network is weighted with a correlation estimated from the population genotype data. This should be useful in efficiently breaking the PPI network into different sub-networks (see the section below) and helpful in combining $p$-value approaches that account for dependency of neighbouring genomic markers within/between genes. Figure 5 summarizes the work-flow of the method implemented in ancGWAS.
+
+Assuming sets of SNPs $S^{a}=\lbrace s_{i}\rbrace_{i=1,2,\ldots,m}$ and $S^{b}=\lbrace s_{j} \rbrace_{j=1,2,\ldots,n}$, $s_{i}\neq s_{j}$, for $i=1,2,\ldots,m$, and for $j=1,2,\ldots,n$ are assigned to genes $G_{a}$ and $G_{b}$; the pairwise LD of SNPs between $G_{a}$ and $G_{b}$ are independent and are computed using the $r^{2}$ measure \cite{kristin} from non-admixed population genotype data. In the case of an admixed population, the admixture LD is computed following model in \cite{loh,ad35}. The distribution of the LD is not normal, thus from ($s_{i}\neq s_{j}$) we compute the average z-transforms of $LD$ from all possible combinations of pairs of SNPs between genes $G_{a}$ and $G_{b}$. The z-transforms of $LD$ are normally distributed with mean $0$ and variance $1$ \cite{choi}. We compute the combined LD between two genes $G_{a}$ and $G_{b}$ as follows,
+
+\begin{equation}
+r_{G_{a}G_{b}}=tanh\left(\dfrac{\sum^{N}_{i\neq j} tanh^{-1}\left( LD_{s_{i}s_{j}}\right) }{N}\right). \label{(8.2)}
+\end{equation}
+
+%\item [Case 3:] Alternatively, if SNPs between a given pair of genes are dependent or correlated, we consider the maximum $r_{G_{a}G_{b}}=tanh(\max_{i \neq j}(tanh^{-1}\left(LD_{s_{i}s_{j}}\right)))$ among all possible $N$ pairs of SNPs between the given pair of genes. 
+
+The combined LD is used as the weight of the edge between $G_{a}$ and $G_{b}$ genes in the PPI network. The computation of equation \ref{(8.2)} may generate values close to zero (but not exactly zero) for unlinked SNPs, particular for the genotype data of non-admixed populations, where SNPs at genes across chromosomes or even on the same chromosome are not at all linked.
+
+\subsection*{Searching for Sub-networks using Centrality Measures} 
+\label{searchnet}
+
+Genes interact in large networks in all living organisms, and some genes in the network are more important or central than others \cite{lith}. Highly connected genes in PPI networks can be functionally important and the removal of such nodes is related to lethality \cite{lith}. Here we introduce four centrality measures (see below) to account for the topological analysis of the PPI network. We consider our weighted PPI network as an undirected network, $G=\left(V,E\right)$, where $V$ is the set of $n$ genes as nodes and $E$ is the set of edges as interactions found between genes weighted using gene-correlation. To break down the graph $G$ into sub-networks, we analyse the general properties of $G$ and quantify the usefulness of each gene in $G$ using their centrality scores; closeness, betweenness, degree or eigenvector. Let us first define the following centrality measures,
+
+\begin{itemize}
+\item [(1)] \textbf{Degree Centrality:}
+
+The degree centrality $C_{d}$ of a gene in an undirected graph $G$ is the number of genes in the network
+interacting with it. In terms of adjacency matrix $\mathcal{A} = \left(a_{uv}\right)_{1\leq u,v \leq n}$ [28], which is symmetric for an undirected graph, the degree centrality of a node $u \in V$ ($u$ as a column or a row in the adjacency matrix) is the sum of components in the column or row corresponding to the node $u$, i.e., $\sum_{v in V} a_{uv} = C_d = \sum_{v in V} a_{vu}$. The degree centrality provides an indicator of the influence of a gene on a biological system and indicates whether the gene plays a key role in the functioning of the system. $C_{d}$ is also used, for instance, to correlate the degree of a gene in the network with the lethality of its removal, as well as in amplification \cite{lith}.
+
+\item [(2)] \textbf{Closeness Centrality Measure:} 
+
+The closeness centrality $C_{c(u)}$ of a node $u$ in a network is the inverse of the average distance to all other nodes connected to it \cite{add1}, i.e., $C_{c(u)} = \frac{1}{\frac{1}{m} \sum_{v\in V_u}dist(u,v)}$, where $V_{u}$ is the set of nodes connected to $u$, $m =  \vert V_{u} \vert$ the number of nodes in $V_u$ and $dist(u, v)$ is the shortest communication path between $u$ and $v$ in the network. The closeness centrality measure provides an indication of how functionally relevant a gene is for other genes in terms of accessing information via or propagating information to other genes in the connected part of the network containing that gene. Thus, a gene with high closeness, compared to the closeness of the whole network, may be central to the connection of other genes.
+
+\item[(3)] \textbf{Communication Betweenness Centrality Measure:} 
+
+Let us denote $\gamma_{uv}$, the number of communications between genes $u$ and $v$, and $\gamma_{uv}\left(t\right)$ the number of shortest paths between $u$ and $v$ in the network $G$ using $t$ as an interior node, for $t,$ $u,$ $v\in V\left(G\right)$. The rate of communication between $u$ and $v$, $\Delta_{uv}$ that can be controlled by an interior gene $t$, is given by 
+\begin{equation}
+\Delta_{uv} (t)=\frac{\gamma_{uv}\left(t\right)}{\gamma_{uv}}, \nonumber
+\end{equation}
+if $\gamma_{uv}=0,$ then we set $\Delta_{uv}=0$. The shortest path betweenness centrality $C_{spb}\left(t\right)$ is given by 
+\begin{equation}
+C_{spb}=\sum_{u\in V\wedge u\neq t}\,\,\sum_{v\in V\wedge v\neq t}\Delta_{uv}\left(t\right).\nonumber
+\end{equation}
+
+In protein networks, the shortest communication betweenness centrality of a protein may determine its relevance in holding together communicating genes and the ability of a protein to enable communication between distant genes.
+
+\item [(4)] \textbf{Eigenvector Centrality Measure:}
+
+We additionally introduce the eigenvector centrality measure to assess the usefulness or the weight of functional connections of genes to calibrate the partnership between genes in the network \cite{wu,cowy}. This may be used to cluster genes into meaningful sub-networks. The eigenvector centrality measure assigns relative weights to all genes in the network based on the fact that connections to high-weighted genes contribute more to the weight of the gene target. This means the weight or the contribution $x_{u}$ of the gene $u$ to the functioning of the system is proportional to the sum of the scores of all genes v connected to u, i.e.,
+\begin{equation*}
+    \sum_{(u,v) \in E} x_{v} = \lambda x_{u} \nonumber
+\end{equation*}
+where $\lambda$ is a constant of proportionality and $x_{z}$ denotes the contribution of gene $z$.\\
+In terms of the adjacency matrix $\mathcal{A} = \left(a_{uv}\right)_{1\leq u,v \leq n}$, we have
+\begin{equation*}
+    \sum_{v = 1}^n a_{uv} x_{v} = \lambda x_{u}
+\end{equation*}
+with $n$ the number of genes in the network. It turns out that $\lambda$ is simply an eigenvalue of the adjacency matrix and the vector of contributions of genes is the eigenvector associated with $\lambda$.
+
+\end{itemize}
+
+Genes which are central in association with complex disease susceptibility may be considered to be centres of biological sub-networks, and are linked to other genes in that sub-network via few steps (paths in the network) \cite{jia}. These centres are structural hubs with centrality scores beyond a certain threshold value. Biological topological property tests of a biological network can guarantee the aforementioned. Let us denote $o\left(G\right)$ the order, $s\left(G\right)$ the size of $G$ and $SP_{mean}$, the mean shortest-path  from every node to every destination within the network $G$. Note that the cut-offs of different network centrality measures are estimated using general topological properties of the network \cite{add1}. For the betweenness measure, the cut-off is the total number of shortest paths expected in the network, which is approximately $o(G)*SP_{mean}$. For the closeness metric, as defined in the section above, the cut-off is $1/SP_{mean}$ and that of the degree centrality measure is the number of expected interacting genes of a gene in the network, which is $s(G)/o(G)$. In the case of the eigenvector measure, the cut-off is the mean value of the weight or contribution vector of all genes in the network. We perform the following steps to capture the topological properties of the network in identifying sub-networks using centrality scores of each gene:
+
+ \begin{enumerate}
+\item[(1)] Given network $G$, find structural hubs and connected components; 
+\item[(2)] For each gene, compute the betweenness, the closeness and the eigenvector scores; 
+\item[(3)] For each centrality score, compute the cut-off for central genes of sub-graphs BetOf, ClosOf, DegOf and EigOf; 
+\item[(4)] Consider a gene as a hub if its score is greater than or equal to the corresponding cut-off; 
+\item[(5)] Consider a gene as a central gene if it is a hub for all four scoring measures in step (3); 
+\item[(6)] For each central gene, search for its neighbours given a step $n$ or the mean shortest path. The central gene and its neighbours constitute a sub-network of $G$. 
+\end{enumerate}
+
+
+%\textbf{ancGWAS Flowchat}
+%\begin{enumerate}
+%\item[(1)] Given network $G$, find structural hubs and connected components; 
+%\item[(2)] For each gene, compute the betweenness, the closeness and the eigenvector scores; 
+%\item[(3)] For each centrality score, compute the cut-off for central genes of sub-graphs BetOf, ClosOf, DegOf and EigOf; 
+%\item[(4)] Consider a gene as a hub if its score is greater than or equal to the corresponding cut-off; 
+%\item[(5)] Consider a gene as a central gene if it is hub for all the four scoring measures in step (3); 
+%\item[(6)] For each central gene, search its neighbours given a step $n$ or the mean shortest path. The central gene and its neighbours constitute a sub-network of $G$. 
+%\end{enumerate}
+%\label{ancalge}
+%\end{align}
+%%\example{\parbox{12cm}{%
+%\begin{center}
+%\textbf{ancGWAS Flowchat}
+%\end{center}
+%\label{ancalge}
+%\begin{enumerate}
+%\item[(1)] Given network $G$, find structural hubs and connected components; 
+%\item[(2)] For each gene, compute the betweenness, the closeness and the eigenvector scores; 
+%\item[(3)] For each centrality score, compute the cut-off for central genes of sub-graphs BetOf, ClosOf, DegOf and EigOf; 
+%\item[(4)] Consider a gene as a hub if its score is greater than or equal to the corresponding cut-off; 
+%\item[(5)] Consider a gene as a central gene if it is hub for all the four scoring measures in step (3); 
+%\item[(6)] For each central gene, search its neighbours given a step $n$ or the mean shortest path. The central gene and its neighbours constitute a sub-network of $G$. 
+%\end{enumerate}}}
+
+%\end{algorithm}
+
+\subsection*{Statistical Methods for Combining $p$-values at the Gene and Sub-network Level}
+\label{ancGWAS}
+
+Combined $p$-value approaches are commonly utilized for meta-analysis \cite{buhm,rita} and neighbouring genomic markers in genetic association studies \cite{Zayk,jia,peng}, and have a long history \cite{folk,hedge,loughi}. Under the null hypothesis, the $p$-values $p_{i}$, $\left( i = 1,\ldots,L\right)$ for a test-statistic with a continuous null distribution are uniformly distributed in the interval 	$\left[0,1\right]$. In this framework, a parametric cumulative distribution function $F$ can be chosen and the $p$-values can be transformed into quantiles according to $q_{i} = F^{-1}(p_{i})$, $\left( i = 1,\ldots,L\right)$. The combined test statistic $C^{P} = \sum^{L}_{i=1} q_{i}$ is a sum of independent and identically distributed random variables $q_{i}$ each of which follows the corresponding probability density function for $F$. To account for the independent assumption of $p$-values and the correlation of $p$-values among neighboring genomic markers, we implement both the Stouffer-Liptak \cite{lipt} and Fisher's Combined probability \cite{fish,hess} methods accounting for spatial correlations among SNPs within a gene or SNPs within a given sub-network. In addition, we implement other known statistical methods including Simes, the Smallest and the Smallest gene-wise FDR \cite{jia,peng}, commonly used to combine the association $p$-values from SNPs at the gene level.
+
+\begin{itemize}
+\item [(1)] \textbf{ Fisher’s Combined Probability Test}\\
+
+Let $\hat F$ be the cumulative $\chi^{2}$ distribution. Let $p_{i}$, $\left(i = 1 \ldots,L\right)$ be $p$-values of SNPs associated with a gene or a sub-network. We obtain the combined $p$-value test statistic \cite{fish,hess} $ C^{P} = -2 \sum_{i=1}^{L} \log (1 - p_{i})$ which follows a $\chi^{2}$ distribution with $2L$ degrees of freedom due to the additivity property of independent $\chi^{2}$. The combined $p$-value is $p^{*} = \hat F (C^{P})$, where $\hat F$ is the cumulative distribution function for the $\chi^{2}$ distribution with $2L$ degrees of freedom. Suppose $p_{i}$ are dependent, we can approximate the distribution of Fisher's Combined Probability $C^{P}$ by a scaled $\chi^{2}$ distribution such that $C^{P}\approx c.\chi^{2}_{f}$, where $c$ is a scaling factor and $f$ the degree of freedom. Let,
+
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+E(C^{P}) &&= E(c.\chi^{2}_{f})  \nonumber\\[2pt]
+&&= c.f \nonumber \\[2pt]
+Var(C^{P}) &&= Var(c.\chi^{2}_{f}) \nonumber\\[2pt]
+&&= 2.c^{2}f \nonumber
+\end{eqnarray}
+
+Solving the above equation with respect to $c$ and $f$, we obtain,
+
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+c &&= \dfrac{Var(C^{P})}{2.E[C^{P}]}  \nonumber\\[2pt]
+&&= \dfrac{4L + 2\sum_{i<j}Cov[-2.\log(p_{i}),-2.\log(p_{j})]}{4L} \nonumber\\[2pt]
+f &&= \dfrac{E(C^{P})^{2}}{Var(C^{P})} \nonumber\\[2pt]
+&&= \dfrac{2.(2L)^{2}}{4L+2\sum_{i<j}Cov[-2.\log(p_{i}),-2.\log(p_{j})]} \nonumber
+\end{eqnarray}
+
+Since $C^{P} \approx \chi^{2}_{2L}$. The combined $p$-value for $C^{p}$ is determined by using the approximating distribution $C^{P}/c \approx \chi^{2}_{f}$. To compute terms in $Var(C^{P})$, we apply approximations described in \cite{kost} by fitting a polynomial regression to the true values using a grid approach ranging values for the degrees of freedom ($9 \leq \nu \leq 125$) and the auto-correlations $\sigma$ ($-0.98 \leq \rho \leq 0.98$). Finally, we compute the q-value score based on the Benjamini-Hochberg false-discovery \cite{benj} correction.
+
+\item [(2)]  \textbf{Stouffer-Liptak Test} \\
+
+Let $F$ be the cumulative standard normal distribution $\mathcal{N}(0, 1)$. It follows that $F(x) = \Phi(x)$, where $\Phi$ is the cumulative distribution function of the standard normal, and $q_{i} = \Phi^{-1} (p_{i})$. Each $q_{i}$, $\left(i=1,\ldots,L\right)$ follows the probability density function of a standard normal and using the additivity property of independent random variables, the Liptak's combined $p$-value test statistic \cite{lipt} is $C^{P} = \dfrac{\sum_{i=1}^{L}q_{i}}{\sqrt{L}}$ and the related combined $p$-value is $p^{*} = \Phi(C^{P})$. To adjust for $p$-value dependency, we assume that $p_{i}$ $\left(i = 1,\ldots,L\right)$ are correlated according to a positive definite and non-degenerate correlation matrix $\Sigma$. It follows that the Cholesky factor $C$ exists such that $\Sigma = CC^{T}$. We transform the correlated quantiles $Q = {q_{i}}$ into independent quantiles $\hat Q$ as in Zaykin et al. \cite{Zayk}. We then obtain the transformation $\hat Q = C^{-1}Q$. The $q_{i}$ $\left(i =1,\ldots,L\right)$ are now independent and follow a standard normal distribution \cite{Zayk}. Finally, we apply the Stouffer-Liptak test on $\hat Q$. As for Fisher's Combined Probability test, here we compute q-values on a null-model from shuffled $p$-values.
+
+\end{itemize}
+
+Both the Stouffer-Liptak \cite{lipt} and Fisher's Combined probability \cite{fish,hess} methods produce a similar statistic summary. The permutation procedure of the statistic summary from both approaches is based on the Benjamini-Hochberg \cite{benj} false-discovery correction methods (see Supplementary Text S1).
+
+\subsection*{Method for Combining Local Ancestry at Gene and Sub-network Level}
+
+Admixed populations provide particular opportunities for (1) investigating ancestral signatures of selection by looking for genomic regions that exhibit unusually large deviations in ancestry proportions and (2) performing case-control admixture mapping \cite{tang2,monta}. Case-control admixture mapping has recently been advertised as a promising strategy for identifying regions that contribute to both shared and population-specific difference in disease susceptibility. Both signature of selection in admixed populations and admixture mapping have been applied to some admixed populations such as Puerto Rican and Mexican populations \cite{tang2,dara}. However, similarly to standard GWAS, both approaches are based on single-marker-based analysis. Because complex diseases are caused by several factors, such as multiple genes through gene-gene interactions and gene-environment interactions \cite{wum,wuka,wuhr,wu3,wu4,wu5,wu6}, both approaches mentioned  above may generate false negative results. To take advantage of the combined effects of all SNPs in a particular gene and genes within a sub-network, here we aim to combine the effect of locus-specific ancestry of SNPS within a gene/sub-network in estimating sub-network- or gene-specific ancestry. The gene or sub-network that exhibits unusually large deviations in average gene/sub-network ancestry compared with what is typically observed elsewhere in the genome, can be viewed as ancestral signatures of selection. Secondly from the estimated gene- and sub-network-specific ancestry from case and control samples, respectively, we test for case-control differences in ancestry at gene and sub-network levels and validate the overlaps of candidate peaks within gene/sub-network association signals (see next section). 
+
+Our goal is to combine the average locus-specific ancestry $\phi_{mk}$ from the $k^{th}$ ancestry (estimated from locus-specific ancestry among $i \in \lbrace 1,2,\ldots,N \rbrace$ admixed individuals) of SNP $m \in \lbrace 1,2,\ldots,L \rbrace$ associated with a given gene (or to a combined set of SNPs associated with each gene within a sub-network). Each average locus-specific ancestry $\phi_{mk}$ can be considered as a single observation at SNP $m$, and we make an assumption that each observation $\phi_{mk}$ can be approximated as a normal distribution under neutral drift with mean $0$ and empirical variance $V_{mk}$ derived from the distribution of locus-specific ancestry among the $N$ admixed individuals. Such an assumption is commonly acceptable in admixture studies because of the large sample size \cite{pcadm,yael}. Here we consider the likelihood of these observations. For simplicity, we describe the method at the gene level. Let $\lbrace \phi_{1k}, \phi_{1k},\ldots,\phi_{Lk}\rbrace$ be the average locus-specific ancestry of SNP $m \in \lbrace 1,2,\ldots,L \rbrace$ associated with gene $j$, $(j= 1, 2, \ldots,J)$. Let $V_{mk}$ and $W_{mk}$ be the variance and inverse variance (precision) of $\phi_{mk}$ and $\mu_{jk}$ be the unknown true gene-specific ancestry of $j$ from the $k^{th}$ ancestral population. Assuming $\phi_{mk}$, $m \in \lbrace 1,2, ...,L \rbrace$ from the $k^{th}$ ancestral population have similar magnitude at $j$, testing whether $\mu \neq 0$, we can derive $\mu_{jk}$ from the maximum likelihood of alternative hypotheses $\mathtt{L}_{1}$ by solving,
+
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+\dfrac{\partial \mathtt{L}_{1}}{\partial \mu_{jk} } = 0 \nonumber \\[2pt]
+\dfrac{\partial}{\partial \mu_{jk}} \left( \prod_{m=1}^{L} \dfrac{1}{\sqrt{2.\pi V_{mk}} } \exp\left(-\dfrac{\left(\phi_{mk}-\mu_{jk} \right)^{2}}{2V_{mk} }\right)\right) = 0 \nonumber
+\end{eqnarray}
+
+where $\mu_{jk}$ is the unknown true gene-specific ancestry at $j$ from the $k^{th}$ ancestral population. It follows that the maximum likelihood estimate of $\mu_{jk}$ and its variance $\nu_{jk}$ is given by
+
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+\hat \mu_{jk} &&=  \dfrac{\sum_{m=1}^{L}W_{mk}\phi_{mk}}{\sum_{m=1}^{L}W_{mk}} \label{(8.a)} \\[2pt]
+\hat \nu_{jk} &&= \dfrac{1}{\sum_{m=1}^{L}W_{mk}} \nonumber
+\end{eqnarray}
+
+It is necessary to account for the bias of each observed average locus-specific ancestry (obtained from current locus-specific ancestry inference methods) and accuracy of the gene-specific ancestry estimates when combining local ancestry information. To address this, we use an empirical approach that uses the posterior probability $\rho_{jk}$ that the gene-specific ancestry at gene $j$ is unbiased. $\rho_{jk}$ is estimated from the data as the prior weight for each ancestral population. Since the posterior probability $\rho_{jk}$ is estimated using all possible ancestries of the admixed population, this approach can be thought of as gathering information from all contributing ancestral populations and distributing back in the form of weight at gene-specific ancestry. Let $f_{mk}$ be minor allele frequency of SNP $m \in \lbrace 1,2,\ldots,L \rbrace$ associated with gene $j$, $\left(j= 1,2,\ldots,J \right)$ from the $k^{th}$ ancestral population. We can approximate the precision $\frac{1}{\hat \nu_{jk}}$ such as 
+$\frac{1}{\hat \nu_{jk}} \approx \mathbb{\eta}_{jk} = \sum^{L}_{m=1}N.f_{mk}\left(1-f_{mk}\right)$, where $N$ is the sample size in the $k^{th}$ ancestral population. Now let $\hat X_{k}$ and $\hat \varepsilon_{k}$ be the gene-specific ancestry (see equation \ref{(8.a)}) and the precision from other $K$-1 ancestral populations $l \neq K \in {1,2, \ldots,K}$. 
+
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+\hat X_{k} && = \dfrac{\sum^{K}_{l\neq k} \hat V_{jl} \hat \mu_{jl} }{\sum^{K}_{k\neq } \hat \nu_{jl} } \label{(8.b1)} \nonumber \\[2pt]
+\hat \varepsilon_{k} && = \dfrac{1}{\sum^{K}_{k\neq l} \hat \nu_{jl}}, \nonumber
+\end{eqnarray}
+
+Applying the Baye’s theorem, we approximate the posterior probability $\rho_{jk}$, at each gene $G_j$ as follows,
+
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+\hat \rho_{jk} &&= \dfrac{\pi\int_{\mathbb{R}} \mathcal{N}(\phi_{mk}\vert \theta,\mathbb{\eta}_{jk}) p(\theta) d \theta  } {(1-\pi)\mathcal{N}(\phi_{mk}\vert 0,\mathbb{\eta}_{jl})+\pi\int_{\mathbb{R}}\mathcal{N}(\phi_{mk}\vert \theta,\mathbb{\eta}_{jl}) p(\theta) d \theta },\quad l \neq k \in {1,2,\ldots,K}.  \label{(8.b)}
+\end{eqnarray}
+
+Let $ \theta \approx \mathcal{N}(\hat X_{k},\hat \varepsilon_{k})$ be an empirical prior on $\theta$. Applying the symmetric propriety of the Gaussian distribution and the fact that the product of Gaussian probability density functions can yield a single Gaussian density function, equation \ref{(8.b)} becomes,
+
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+\hat \rho_{jk} = \dfrac{ \pi\mathcal{N}(\hat \mu_{jk}\vert \hat X_{k},\mathbb{\eta}_{jl}+\varepsilon_{k})} {(1-\pi)\mathcal{N}(\hat \mu_{jk}\vert 0,\mathbb{\eta}_{jl})+\pi\mathcal{N}(\hat \mu_{jk}\vert \hat X_{k}, \mathbb{\eta}_{jl}+\varepsilon_{k})},\quad l \neq k \in {1,2,\ldots, K}. \label{(8.c)}
+\end{eqnarray}
+
+Thus, at gene $j$ for $k \neq l \in \lbrace 1,2, \ldots, K \rbrace$, we weight the maximum likelihood estimate of $\mu_{jk}$ in equation \ref{(8.a)} by the posterior probability $\rho_{jk}$ in equation \ref{(8.c)},
+
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+\Theta_{jk} = \dfrac{\hat \mu_{jk} \sum^{K}_{l=1} \rho_{jl} }{\sum_{l=1}^{K} \rho^{2}_{jl}}  \label{(8.d)} 
+\end{eqnarray}
+
+The approach described above is similar to a leave-one-out cross-validation approach used in examining statistical prediction \cite{buhm}. Given sub-network- or gene-specific $\Theta_{jk}$ at gene $j \in \lbrace 1,2, \ldots, J \rbrace$ and the genome-wide ancestral proportion $\mu_k$ from ancestral populations $k^{th}$, we compute gene/sub-network ancestral signatures of selection by looking at which gene/sub-network ancestry, $j \in \lbrace 1,2, \ldots, J \rbrace$ exhibits unusually large deviations in average gene/sub-network ancestry compared with what is typically observed elsewhere in the genome, as follows,
+
+\setlength\arraycolsep{2pt}
+ \begin{eqnarray}\label{eq:3.1}
+Z^j_k= \dfrac{\Theta_{jk}-\mu_k}{Var\left(\Theta_{jk}\right)}  
+\end{eqnarray}
+
+\subsection*{Testing Case-control Ancestry Difference at Gene or Sub-network Level}
+
+Let $\Theta^{+}_{jk}$ and $\Theta^{-}_{jk}$, $(j=1,\ldots, N$) be the gene-specific ancestries (for $N$ genes within a given sub-network) estimated from $n_{1}$ samples of cases and from $n_{2}$ samples of controls. Assuming  $\vert \Theta^{+}_{jk} - \Theta^{-}_{jk} \vert \neq 0$, $(j=1,\ldots, N)$, thus let $\Gamma_{j}$ be the rank pairs from smallest to largest absolute difference within a sub-network. We use the Wilcoxon signed-rank statistic $\mathcal{W} = \vert \sum_{j}^{N}sign \left(\Theta^{+}_{jk}-\Theta^{-}_{jk} \right).\Gamma_{j}\vert$ \cite{frank}, a non-parametric test of the null hypothesis that the gene-specific ancestries from cases and controls are the same against an alternative hypothesis. Because $N$ increases, the sampling distribution of $\mathcal{W}$ converges to a normal distribution \cite{frank,sidney}, therefore we construct our weighted z-score as follows,
+ 
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+Z_{\mathcal{W}} = \dfrac{\left(\mathcal{W}-0.5\right) \sum_{j}^{N}\vert \rho^{+}_{jk}-\rho^{-}_{jk}\vert}{\sigma_{\mathcal{W}}\sqrt{\sum_{j}^{N}\vert (\rho^{+}_{jk})^{2}-(\rho^{-}_{jk})^{2}\vert}} \label{(9.0)}
+\end{eqnarray}
+
+where, $\sigma_{\mathcal{W}}=\sqrt{\frac{N(N+1)(2N+1)}{6}}$, $\rho^{+}_{jk}$ and $\rho^{-}_{jk}$ are the posterior probabilities estimated from case and control as defined in equation \ref{(8.c)} above. The $sign$ is an odd mathematical function that extracts the sign of a real number \cite{shiro}. The $p$-value can be calculated from enumeration of all possible combinations of $\mathcal{W}$ given N. However, the weighted posterior probability in equation \ref{(9.0)} is not independent of $\mathcal{W}$, the statistic does not follow a normal distribution. Thus, we compute the $p$-value using the importance sampling approach as described in \cite{wasser,penny} by allowing the sampling distribution to be centered at $\mathcal{Z_{\mathcal{W}}}$. Equation \ref{(9.0)} has the advantage of mapping ancestry and identifying candidate ancestry difference (candidate peaks) at gene/sub-network level. However the power to identify genome-wide significant genes or sub-networks underlying ancestry difference in disease risk may intuitively be limited, this approach maybe referred to as a naive admixture mapping.
+
+\subsection*{Characterization of Enriched Sub-networks}
+
+Here we aim to identify the association between each sub-network (obtained from our network-based clustering approach) $S_{i}$, $(i=,\ldots,T)$ within $n_{1},\ldots, n_{T}$ genes and human pathways $P_{j} \in {P_{j}}_{(j=1,\ldots,J)}$ (set of human pathways). We obtained $1,047$ annotated pathways from \cite{pathsi} and collected more than $107$ annotated pathways from the KEGG (http://www.genome.ad.jp/kegg/ pathway.html), BioCarta (http://www.biocarta.com/) and Ambion GeneAssist Pathway Atlas (http://www.ambion.com/tools/pathway) pathway databases. We downloaded genomic coordinates for all genes from the NCBI ftp-server \cite{ncbi} and retained only entries for the human reference sequence and protein-coding genes. We updated genomic coordinates to the latest assembly using the Lift-Over tool in GALAXY \cite{liftover}. We assign the SNPs located $40kb$ within a gene or less than a distance up/downstream of the gene.
+
+Let $\alpha$ be the intersection between genes within $S_{i}$ and genes within pathway $P_{j}$. Let $\beta$ be the intersection between genes within $S_{i}$ and the total genes in ${P_{j}}_{(j=1,\ldots,J)}$. Let $N^{*}$ be the intersection between genes in the $P_{j}$ pathway and the total genes in ${P_{j}}_{(j=1,\ldots,J)}$, and $M^{*}$ be the total genes in ${P_{j}}_{(j=1,\ldots,J)}$. We compute the statistic of significance of overlap between sub-network $S_{i}$ of $n_{t}$ genes and a given pathway $P_{j}$ using the z-score $(Z_{S})$, which employs the binomial proportions test \cite{berge},
+
+\setlength\arraycolsep{2pt}
+\begin{eqnarray}
+Z_{S} = \dfrac{\left(\dfrac{\alpha}{N^{*}}-\dfrac{\beta}{M^{*}} \right)}{\sqrt{ \dfrac{\dfrac{\beta}{M^{*}}.\left(1-\dfrac{\beta}{M^{*}}\right)}{M^{*}}}}
+\end{eqnarray}
+
+The approach above does not only score association for overlapping gene sets and a given pathway, but it has the advantage of accounting for the network structure of interactions between the gene sets through sub-networks.
+
+ \subsection*{Evaluating ancGWAS on a Simulated Disease in an Admixed Population}
+\label{ancSIM}
+
+We use chromosome $1$ including $116,413$ autosomal SNPs from HapMap3 populations, from $162$ samples of North-west Europe (CEU), $140$ samples of Yoruba (YRI), $82$ Guraji indian (GIH) and $80$ Chinese (CHB) data. We independently expand CEU, YRI, GIH and CHB to an additional $2000$ samples. To identify the occurrence of the admixture event \cite{chims}, we sample the haplotypes from YRI, CEU, GIH and CHB with a fixed probability (ancestral proportion) $\textbf{60}\%$, $20\%$, $12\%$ and $8\%$, respectively. The choice of ancestral proportion in simulating diploid admixed individuals is arbitrary. Following the sampling process above, the chromosomal segment of the ancestral population is copied to the genome of the admixed individual and we recorded the locus-specific ancestry (the true ancestry), to assess ancGWAS. While simulating admixed individuals \cite{chims}, we chose a random subset of $1,000$ controls, and then chose $1,000$ cases from the remaining samples so that samples with $0:1:2$ reference alleles have relative probabilities 1:$R$:$R^{2}$ of being selected. Thus, in case samples, we allowed the risk allele to have higher frequency in YRI than in other ancestral populations in order to differentiate cases with higher YRI ancestry at the disease locus region $1p31.3$ (\textit{IL23R} gene) for SNPs $rs2297977$ and $rs841404$. In this causal simulation framework, we simulated four causal SNPs, including \textit{rs2297977}, \textit{rs841404}, \textit{rs790633} and \textit{rs6664119} with heterozygote risks R=$1.5$, $2$, $1.5$ and $2$ and homozygote risks R=$2.25$, $4$, $2.25$ and $2.25$ (causal models). The simulated causal loci are on region $1p31.3$ (\textit{IL23R} gene) for SNPs $rs2297977$ and $rs841404$ and $1p34.2$ (\textit{SLC2A1} gene) for SNPs $rs790633$ and $rs6664119$. Of note, \textit{IL23R} and \textit{SLC2A1} are interacting genes. This simulation yielded the genomes of $1,000$ cases and $1,000$ controls of mixed ancestry from  YRI, CEU, GIH and CHB.
+
+Similarly to the above, we apply a null model without causal SNPs. The null model risk alleles are set to R= $1$, $0$, $1$ and $0$ to all SNPs. We chose random subsets of $1,000$ cases and $1,000$ controls without differentiating any ancestry proportion in cases compared to controls. This simulation also yielded the genomes of $1,000$ cases and $1,000$ controls of mixed ancestry from  YRI, CEU, GIH and CHB. 
+
+From each simulation data set (null and causal models) above, we conducted standard GWAS analysis using EMMAX \cite{emax1}, which accounts for both population stratification and hidden relatedness. To account for interacting disease SNPs and moderate risk that may not reach the intrinsic genome-wide significance cut-off of $P < 5.00e-08$ in the standard GWAS above, we applied ancGWAS on the GWAS result. We incorporated in ancGWAS the true locus-specific ancestry generated from the simulation above and the estimated locus-specific ancestries from LAMP-LD \cite{yael} in assessing our methods for combining the locus-specific ancestries at both gene and sub-network levels.
+
+\subsection*{Assessing ancGWAS on a Simulated Pathway-based Association Study}
+\label{ancPath}
+
+To further evaluate the performance of ancGWAS, we simulated a pathway-based GWAS using PATHSIMU \cite{pathsi}. We used genotype data from the CEU HapMap project \cite{hapm} to simulate $100$ samples genotyped at $3,848,887$ markers with three disease genes \textit{ATP5O}, \textit{ATPIF1} and \textit{BTG3} were simulated in the up-regulated aged mouse hypothalamus in NF-$\kappa$B pathway. These genes were randomly selected from a set of $1,047$ annotated pathways from KEGG (\url{http://www.genome.ad.jp/kegg/pathway.html}), BioCarta (\url{http://www.biocarta.com/}) and GeneAssist Pathway Atlas Databases (\url{http://www.ambion.com/tools/pathway}) as disease genes for a quantitative phenotype. The disease-associated loci were {\small \textit{rs2834287} closely associated with \textit{ATP5O}, \textit{rs507238} associated with \textit{ATPIF1} and \textit{rs2250305} associated with \textit{BTG3}. The simulated disease pathway contains $37$ additional genes, including \textit{RPS12}, \textit{MAP4}, \textit{SNX2}, \textit{NDUFB5}, \textit{PRDX1},  \textit{MAP2K1}, \textit{AKR1A1}, \textit{ANP32B}, \textit{ATP5O}, \textit{ATP5L},\textit{SEPT4},  \textit{ATPIF1}, \textit{ATP5C1}, \textit{PPP1R7}, \textit{ITPR1}, \textit{BTG3}, \textit{TPD52},\textit{CSF1R}, \textit{C1QBP}, \textit{PPA1}, \textit{PSMA6}, \textit{PSMA4}, \textit{CCT6A}, \textit{HK1}, \textit{COX7A2}, \textit{CTSS}, \textit{PAFAH1B1}, \textit{CASP6}, \textit{PSMD14} \textit{HEXB}, \textit{ADCY9}, \textit{TBCA}, \textit{HSPE1}, \textit{CLK1}, \textit{ACTB}, \textit{PREP} and \textit{M6PR}. 
+
+The proportion of phenotypic variance explained by additive genetic effects of \textit{ATP5O}, \textit{ATPIF1} and \textit{BTG3} were assigned $2\%$, $1\%$ and $1\%$, respectively. We simulated interactive genetic effects between \textit{ATP5O} and \textit{ATPIF1}, \textit{ATP5O} and \textit{BTG3}, and \textit{ATPIF1} and \textit{BTG3}, explaining $0.5\%$, $0.3\%$ and $0\%$ of phenotypic variances, respectively. From the simulated data, we then conducted the association analysis by applying EMMAX, and subsequently did post GWAS analysis using the ancGWAS and dmGWAS \cite{jia} approaches. This allowed us to evaluate the performance of ancGWAS and compare it to dmGWAS.
+
+\subsection*{Application to Breast Cancer}
+\label{anccancer}
+
+We obtained the stage I case-control breast cancer data \cite{hunter} from the National Cancer Institute Cancer Genetic Markers of Susceptibility (CGEMS, \url{http://cgems.cancer.gov/}). The data set was genotyped on an Illumina HumanHap $550$ array, and the samples included $1,145$ postmenopausal women of European ancestry with invasive breast cancer and $1,142$ controls, nested within the prospective Nurses Health Study cohort. We performed a quality control filter, excluded all unmapped SNPs and $528,169$ SNPs were finally included in this study. We evaluated the extent of substructure in the data set (separating cases and controls as distinct groups) and examined whether stratification can be accounted for in the GWAS. We accounted for both population stratification and hidden relatedness, and applied the mixed model approach in EMMAX \cite{emax1} on the data sets. In addition, we conducted imputation \cite{marchi} GWAS, using only imputed genotypes from the $1000$ Genomes project \cite{1000g} populations in the chromosomal region $10q26$ that harbours the \textit{FGFR2} gene identified in \cite{hunter}. After standard GWAS analysis, we conducted post GWAS analysis by applying both ancGWAS and dmGWAS to the resulting standard GWAS summary statistics.
+% Do NOT remove this, even if you are not including acknowledgments
+
+\section*{Acknowledgements}
+
+We thank all study participants for the data set used. Computations were performed using facilities provided by the University of Cape Town's ICTS High Performance Computing team (\url{http://hpc.uct.ac.za}). 
+The authors received no specific funding for this study.	
+%\section*{References}
+% The bibtex filename
+\bibliography{ref}
+
+\newpage
+
+
+\section*{Figure Legends} % Legends}
+
+\begin{flushleft}
+Figure {\bf 1:} {\bf Plot of the distribution of observed $p$-values versus its $q$-values (the false discovery rate). Plots are (A) the distribution of observed $p$-values versus its $q$-values from the simulation data of a 4-way admixed population, (B) the simulation of pathway-based GWAS data, and (C) $1,145$ post-menopausal women of European ancestry with invasive breast cancer and $1,142$ controls, genotyped at $528,169$ SNPs.}
+\end{flushleft}
+
+\begin{flushleft}
+Figure {\bf 2:} {\bf A topological analysis of properties of the network. (A) Network path distribution showing that the network has a small world property, suggesting that the spread of information in the network is achieved through $7.01$ steps (the average shortest communication length). (B) The connectivity and power law $P\left(k\right)=k^{-\gamma}$ distribution of genes by fitting the model using the least-square approach.}
+\end{flushleft}
+
+\begin{flushleft}
+Figure {\bf 3:} {\bf Top $20$ ranked sub-networks from the simulation data of a 4-way admixed population enriched for disease risk, and highly connected sub-networks of $<295$ connected genes related to the \textbf{proteoglycan syndecan-mediated signaling events pathway (z-score of overlap = $1.6$)}. The size of a node denotes its statistical significance from small to large. Nodes are coloured according to the ancestry proportions: red = YRI (Yoruba ancestry), blue = CEU (European ancestry), green = CHB (Chinese ancestry) and yellow = GIH (Gujarati Indian ancestry).}
+\end{flushleft}
+
+\begin{flushleft}
+Figure {\bf 4:} {\bf Central sub-network of breast cancer. The size of a node denotes its significance with size increasing with significance. The black denotes previously identified breast cancer associated genes or genes interacting with known breast cancer genes (in red contour).}
+\end{flushleft}
+
+\begin{flushleft}
+Figure {\bf 5:} {\bf Work-flow of the ancGWAS approach, providing an overview of the inputs, modules and outputs.}
+\end{flushleft}
+
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{\textbf{\small{Post GWAS analysis at the gene level using the causal simulation data set of a 4-way admixed population: Top moderate/significant genes from combining the effect of associated SNPs within a gene using ancGWAS. The table also displays the standard GWAS results for these top genes, gene-specific ancestry proportions and the Wilcoxon signed-rank statistical test of unusual case-control difference in ancestry. The rs IDs in bold are the simulated disease SNPs. As expected, the results of this causal simulation data demonstrate a significant unusual case-control difference in YRI ancestry which is consistent with the simulation.}}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.7}{
+\begin{tabular}{c c| c|c c c c| c c c c}\hline\hline
+
+\multicolumn{2}{|c|}{Standard GWAS} & \multicolumn{5}{|c|}{Post GWAS analysis with ancGWAS}&\multicolumn{4}{|c|}{ancGWAS:Case-control ancestry difference}  \\[3pt] \hline\hline 
+\multicolumn{2}{c}{ } & \multicolumn{5}{c}{} & \multicolumn{4}{c}{Gene-	specific Ancestry (Adjusted Wilcoxon, Q$\_$Wilcoxon)} \\[3pt] \hline\hline
+\textbf{SNPs} & \textbf{P}& \textbf{Gene} & \textbf{Liptak} &  \textbf{Q$\_$Liptak} & \textbf{Fisher} &\textbf{Q$\_$Fisher} & \textbf{YRI}& \textbf{CEU}& \textbf{GIH}& \textbf{CHB} \\[2pt]\hline
+
+\textit{\textbf{rs841404}} & $2.84e-05$ &\textbf{\textit{FAM183A}} & $1.23e-26$ & $1.17e-26$ & $3.13e-23$ & $3.08e-23$ & $0.53(0.6, 0.00069)$ & $0.09(0.6, 0.0006)$ & $0.18(0.5, 0.00069)$ & $0.19(1.0, 0.0002)$ \tabularnewline
+\textit{\textbf{rs2297977}}&$1.10e-05$ &  \textbf{\textit{SLC2A1}} & $2.98e-12$ & $5.65e-13$ & $4.17e-07$ & $8.23e-08$ & 0.53(0.3, 0.00042) & 0.09(0.3, 0.0004) & 0.18(0.3, 0.0004) & 0.19(0.38380, 0.0001) \tabularnewline
+\textit{\textbf{rs790633,rs6664119}} & $0.002$ & \textbf{\textit{IL23R}} & $2.16e-04$ & $1.99e-04$& 0.01 & 0.0005 & $0.57$(\textbf{$5.21e-08$}, $0.0005$) & $0.05$($0.0002$, $0.0005$) & $0.14$($0.0002$, $0.0005$) & $0.23$($0.0002$, $0.0009$) \tabularnewline
+
+\textit{rs2494997} & $0.0007$ & \textit{MED8} & $1.87e-04$ & $1.81e-04$& 0.006 & 0.0003 & $0.53$($0.003$, $0.0008$) & $0.09$($0.003$, $0.0008$) & $0.19$($0.003$, $0.0008$) & $0.19$($0.003$, $0.0003$) \tabularnewline
+\textit{rs2842197} & $0.001$ & \textit{CDC20} & $1.26e-06$ & $5.21e-07$ & 0.001 & 0.0001 & $0.53$($0.005$, $0.0009$) & $0.09$($0.005$, $0.001$) & $0.18$($0.004$, $0.001$) & $0.19$($0.005$, $0.0004$) \tabularnewline
+
+\textit{rs3791127} & $0.001$ & \textit{ST3GAL3} & $4.3e-06$ & $1.68e-06$& 0.003 & 0.0002 & $0.53$($0.0004$, $0.0006$) & $0.08$($0.0004$, $0.0006$) & $0.19$($0.0004$, $0.0006$) & $0.20$($0.0002$, $0.0002$) \tabularnewline
+
+\textit{rs7536340} & 0.002& \textit{EBNA1BP2} & $2.57e-08$ & $4.91e-14$ & $9.455e-07$ & $2.33e-06$ & 0.53(0.6, 0.00083) & 0.09(0.6, 0.0008) & 0.18(0.6, 0.0008) & 0.19(1.0, 0.00032) \tabularnewline
+
+\textit{rs17292650} & $0.004$ & \textit{ELOVL1} & $3.41e-06$ & $3.1e-06$ & 0.003 & 0.0002 & $0.53$($0.004$, $0.0009$) & $0.09$($0.004$, $0.0009$) & $0.18$($0.004$, $0.0009$) & $0.19$($0.004$, $0.0003$) \tabularnewline
+
+\textit{rs4143111}& 0.005 &\textit{CDA} & $2.31e-05$ & $1.20e-06$ & 0.006 & 0.0003 & 0.56(0.6, 0.0006) & 0.06(0.6, 0.0006) & 0.18(0.6, 0.0006) & 0.18(1.0, 0.0002) \tabularnewline
+
+\textit{rs12563141} & 0.006 & \textit{ECE1} & $2.39e-05$ & $1.20e-06$ & 0.01 & 0.0005 & 0.56(0.6, 0.0006) & 0.06(0.6, 0.0006) & 0.18(0.6, 0.0006) & 0.19(1.0, 0.0002) \tabularnewline
+
+\textit{rs7553734} &0.007 &\textit{ZC3H11A} & $1.09e-06$ & $8.68e-08$ & 0.0003 & 3.11e-05 & 0.59(0.6, 0.0006) & 0.04(0.6, 0.0006) & 0.11(0.6, 0.0006) & 0.24(1.0, 0.0002) \tabularnewline
+
+\textit{rs12127491} & 0.008 & \textit{SLC2A7} & $8.28e-06$ & $4.93e-07$ & 0.001 & 0.0001 & 0.56(0.6, 0.0007) & 0.05(0.6, 0.0007) & 0.13(0.6, 0.0007) & 0.23(1.0, 0.0003) \tabularnewline
+
+\textit{rs17376524} & 0.008 & \textit{SLC2A5} & $1.32e-05$ & $7.42e-07$ & 0.003 & 0.0002 & 0.56(0.6, 0.0007) & 0.05(0.6, 0.0007) & 0.13(0.6, 0.0007) & 0.23(1.0, 0.0003) \tabularnewline
+
+\textit{rs6699687} & 0.009 & \textit{MPL} & $3.72e-08$ & $4.30e-09$ & $7.42e-06$ & $1.04e-06$ & 0.53(0.6, 0.00088) & 0.08(0.6, 0.0008) & 0.18(0.6, 0.0008) & 0.19(1.0, 0.0003) \tabularnewline
+
+\textit{rs839993} & 0.01 & \textit{TMEM125} & $2.61e-08$ & $4.13e-11$ & $5.46e-07$ & $8.99e-08$ & 0.53(0.6, 0.00076) & 0.08(0.6, 0.0007) & 0.18(0.6, 0.0007) & 0.19(1.0, 0.0003) \tabularnewline
+
+\textit{rs3791127} & 0.01 &\textit{ST3GAL3} & $3.44e-06$ & $2.18e-07$ & 0.003 & 0.0002 & 0.52(0.6, 0.0005) & 0.07(0.6, 0.0006) & 0.19(0.6, 0.0005) & 0.19(0.89857, 0.0002) \tabularnewline
+
+\textit{rs11587504} & 0.02 &\textit{C1orf210} & $4.29e-08$ & $4.53e-09$ & $2.95e-05$ & $3.25e-06$ & 0.53(0.6, 0.00081) & 0.08(0.6, 0.0008) & 0.18(0.5, 0.0008) & 0.19(1.0, 0.0003) \tabularnewline
+
+\textit{rs1199039}& 0.03& \textit{WDR65} & $2.15e-08$ & $1.02e-20$ & $5.23e-07$ & $2.58e-07$ & $0.53(0.6, 0.00062)$ & $0.09(0.6, 0.0006)$ & $0.18(0.6, 0.0006)$ & $0.19(1.0, 0.0002)$ \tabularnewline
+
+\textit{rs12049605}& 0.03& \textit{ATP2B4} & $2.18e-08$ & $6.91e-16$ & $7.01e-07$ & $2.30e-07$ & 0.60(0.6, 0.00062) & 0.04(0.6, 0.0006) & 0.09(0.6, 0.0006) & 0.25(1.0, 0.0002) \tabularnewline
+
+\textit{rs12724078} & 0.04 &\textit{SGIP1} & $2.28-06$ & $1.67e-07$ & 0.008 & 0.0004 & 0.53(0.2, 0.0003) & 0.057(0.2, 0.0003) & 0.12(0.2, 0.0003) & 0.27(0.25579, 0.0001) \tabularnewline
+
+
+
+\textit{rs7513619} & 0.07 & \textit{AK5} & $5.74e-07$ & $5.21e-08$ & 0.001 & 0.0001 & 0.57(0.2, 0.00034) & 0.05(0.2, 0.0003) & 0.08(0.1, 0.0003) & 0.28(0.2, 0.0001) \tabularnewline
+
+\textit{rs2784466} & 0.09 & \textit{TIE1} & $2.69e-08$ & $3.51e-09$ & $1.08e-05$ & $1.34e-06$ & 0.53(0.6, 0.00081) & 0.08(0.6, 0.0008) & 0.18(0.6, 0.0008) & 0.19(1.0, 0.0003) \\[1.5pt] \hline\hline
+\end{tabular}}
+\label{tab:gwasSIM}
+\end{table}
+\end{landscape}
+
+\newpage
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{\textbf{\small{Post GWAS analysis at the sub-network level using the causal simulation data set of a 4-way admixed population: Top $20$ sub-networks with moderate/significant $p$-values (obtained from Liptak-Stouffer method) using ancGWAS. The table also displays the top biological pathway associated with each sub-network, and the score of overlap (Z$\_w$) between sub-network and the associated biological pathway. OvP-pathway and OvP-disease genes provide the list of overlapping genes between sub-network versus pathway and sub-network versus genes associated with the simulated diseases SNPs or genes interacting with these associated disease genes, respectively}.}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.7}{
+\begin{tabular}{c c c c l c c l l}\hline\hline
+\multicolumn{4}{|c|}{Sub-network association } & \multicolumn{5}{|c|}{Overlap with pathways} \\[3pt] \hline\hline
+\textbf{Liptak} &  \textbf{Q$\_$Liptak} & \textbf{GeneHub} & \textbf{\#Genes} & \textbf{Pathway} & \textbf{Z$\_w$} & \textbf{\#overlaps} & \textbf{OvP-pathway} & \textbf{OvP-disease} \\[3pt] \hline\hline
+
+$4.86e-12$ & $1.6e-12$ & \textit{UBE2Q1} & $234$ & Metabolism & $2.4$ & $11$ & \textit{RPS27},\textit{ALDH4A1},\textit{CDA},\textit{SPCS2}, & \textit{UBE2I},\textit{STOM},\textit{SUMO1},\textit{COPS6},\tabularnewline
+& & & & & & &\textit{RPL6},\textit{CMPK1},\textit{UCK2},\textit{ALDH9A1},&\textit{CALR},\textit{SUMO2},\textit{PDIA3},\textit{GAPDH},\textbf{\textit{SLC2A1}},\tabularnewline
+& & & & & & &\textit{RPL12},\textit{COX7B},\textit{PPCS} & \textit{VHL},\textit{UBC},\textit{GIPC1},\textit{CANX} \tabularnewline
+$5.77e-12$ & $9.5e-11$ & \textit{PKLR} & $13$ & Notch-mediated HES/HEY network & $40.4$ & $2$ & \textit{ENO1},\textit{NOTCH2}&\textit{-} \tabularnewline
+
+$3.77e-11$ & $4.13e-10$ & \textit{PTPN22} & $20$ & Beta1 integrin cell surface interactions & $6.5$ & $10$ & \textit{SHC1},\textit{SH2D1A},\textit{LCK}, & \textit{-} \tabularnewline
+
+& & & & & & &,\textit{SH2D2A},\textit{CD247},\textit{FASLG},\textit{ADAM15}, & \textit{-} \tabularnewline
+& & & & & & &\textit{HSP90AA1},\textit{PTPRC},\textit{CDC42}&\textit{-} \tabularnewline
+
+$4.18e-09$ & $3.44e-08$ & \textit{MAD2L2} & $6$ & Cell Cycle, Mitotic & $19.2$ & $3$ & \textit{PTTG1},\textit{CKS1B},\textit{CDC20}&\textit{-} \tabularnewline
+$4.72e-08$ & $3.11e-07$ & \textit{HDAC1} & $21$ & Proteoglycan syndecan-mediated signaling events & $6.5$ & $9$ & \textit{HDAC1},\textit{KDM1A},\textit{GADD45A},&\textit{-} \tabularnewline
+
+& & & & & & &\textit{RBBP4},\textit{PRKCZ},\textit{JAK1},&\textit{-} \tabularnewline
+
+& & & & & & &\textit{HSP90AA1},\textit{SMARCA4},\textit{SETDB1}&\textit{-} \tabularnewline
+
+$6.65e-08$ & $3.65e-07$ & \textit{UBE4B} & $13$ & Integrin family cell surface interactions & $4.4$ & $5$ & \textit{KDM1A},\textit{HMGB1},\textit{MDM4},&\textit{-} \tabularnewline
+& & & & & & &\textit{CHUK},\textit{TP73}&\textit{-} \tabularnewline
+
+$1.35e-07$ & $5.94e-07$ & \textit{CAPZB} & $46$ & Metabolism & $13.01$ & $13$ & \textit{PSMB4},\textit{BPNT1},\textit{RBM8A},\textit{AK2},&\textit{-} \tabularnewline
+& & & & & & &\textit{HSPA8},\textit{RPL18A},\textit{PSMD2},\textit{SRM},&\textit{-} \tabularnewline
+& & & & & & &\textit{DLST},\textit{FH},\textit{RPL22},\textit{SDHB},\textit{ATP5F1}&\textit{-} \tabularnewline
+$1.44e-07$ & $5.94e-07$ & \textit{RPS27} & $14$ & TRAIL signaling pathway & $0.55$ & $3$ & \textit{LTA},\textit{HSPA8},\textit{KRT18}&\textit{-} \tabularnewline
+
+$1.31e-06$ & $4.37e-06$ & \textit{ATAD3B} & $9$ & Metabolism of proteins & $32.41$ & $3$ & \textit{EEF1A1},\textit{DDOST},\textit{CCT3}&\textit{-} \tabularnewline
+
+$1.45e-06$ & $4.37e-06$ & \textit{HDAC1} & $47$ & Proteoglycan syndecan-mediated signaling events & $3.9336$ & $12$ & \textit{HDAC1},\textit{KDM1A},\textit{ACTA1},\textit{GFI1},&\textit{-} \tabularnewline
+& & & & & & &\textit{RAP1A},\textit{RBBP4},\textit{PIAS3},\textit{TP73},&\textit{-} \tabularnewline
+& & & & & & & \textit{MEF2D},\textit{SETDB1},\textit{ATF3},\textit{POU2F1}&\textit{-} \tabularnewline
+
+$1.46e-06$ & $4.37e-06$ & \textit{KCTD3} & $54$ & Gene Expression & $37.30$ & $15$ & \textit{DHX9},\textit{RPS10},\textit{RPL5},\textit{RPL6},&\textit{-} \tabularnewline
+& & & & & & &\textit{EEF1A1},\textit{RPL4},\textit{RPLP0},\textit{RPL21},&\textit{-} \tabularnewline
+& & & & & & &\textit{RPL35},\textit{HNRNPA1},\textit{RPS2},\textit{RPL12},&\textit{-} \tabularnewline
+& & & & & & &\textit{RPL7},\textit{YBX1},\textit{HNRNPR}&\textit{-} \tabularnewline
+
+$1.94e-06$ & $5.29e-06$ & \textit{ACTA1} & $22$ & Proteoglycan syndecan-mediated signaling events & $2.0717$ & $5$ & \textit{HSPA8},\textit{SFN},\textit{HSP90AA1},\textit{ACTA1},\textit{RBBP4}&\textit{-} \tabularnewline
+
+$2.08e-06$ & $5.29e-06$ & \textit{HDAC1} & $21$ & Integrin family cell surface interactions & $4.24$ & $10$ & \textit{HDAC1},\textit{RPS6KA1},\textit{SNIP1},\textit{SP1},&\textit{-} \tabularnewline
+& & & & & & &\textit{HMGB1},\textit{MKNK1},\textit{TP73},&\textit{-} \tabularnewline
+& & & & & & &\textit{RBBP4},\textit{PIAS3},\textit{ATF3}&\textit{-} \tabularnewline
+
+$2.46e-06$ & $5.79e-06$ & \textit{NEDD8} & $20$ & Proteoglycan syndecan-mediated signaling events & $1.71$ & $5$ & \textit{NEDD8},\textit{KDM1A},\textit{USF1},&\textit{-} \tabularnewline
+& & & & & & &\textit{HDAC1},\textit{RBBP4}&\textit{-} \tabularnewline
+
+$5.2e-06$ & $1.14e-05$ & \textit{TMSB4X} & $23$ & Proteoglycan syndecan-mediated signaling events & $2.40$ & $6$ & \textit{NEDD8},\textit{YWHAQ},\textit{GADD45A},&\textit{-} \tabularnewline
+
+& & & & & & &\textit{HSPA8},\textit{SFN},\textit{HSP90AA1}&\textit{-} \tabularnewline
+
+$7.29e-06$ & $1.5e-05$ & \textit{HR} & $28$ & Proteoglycan syndecan-mediated signaling events & $2.71$ & $7$ & \textit{UBE2I},\textit{HSPA8},\textit{GAPDH},\textit{TP73},
+&\textit{UBE2I},\textit{STOM},\textit{SUMO1},\tabularnewline
+& & & & & & &\textit{PTK2B},\textit{SLC2A1},\textit{GIPC1} & \textit{COPS6},\textit{CALR},\textit{SUMO2},\textit{PDIA3},\tabularnewline
+
+& & & & & & & - &\textit{GAPDH},\textit{SLC2A1},\textit{VHL},\textit{PTK2B},\tabularnewline
+& & & & & & & - &\textit{UBC},\textit{GIPC1},\textit{CANX} \tabularnewline
+
+$1.45e-05$ & $2.82e-05$ & \textit{EXOSC10} & $21$ & Gene Expression & $18.02$ & $5$ & \textit{DHX9},\textit{RPL34},\textit{RPL35},\textit{RPL17},\textit{RPL22}&\textit{-} \tabularnewline
+
+$5.76e-05$ & $0.062$ & \textit{KDM1A} & $15$ & Proteoglycan syndecan-mediated signaling events & $1.70$ & $3$ & \textit{SNIP1},\textit{KDM1A},\textit{SETDB1}&\textit{-} \tabularnewline
+
+$7.54e-05$ & $0.018$ & \textit{PSMD4} & $26$ & Apoptosis & $62.79$ & $8$ & \textit{PSMD4},\textit{PSMD10},\textit{PSMD2},\textit{PKP1},&\textit{-} \tabularnewline
+
+& & & & & & & \textit{PSMA5},\textit{PSMC1},\textit{PSMB4},\textit{PSMB2}&\textit{-} \tabularnewline
+
+$8.83e-05$ & $0.004$ & \textit{NEDD8} & $12$ & Metabolism & $13.44$ & $6$ & \textit{PSMD4},\textit{PSMD2},\textit{PSMA5},\textit{GOT2},&\textit{-}\tabularnewline
+
+& & & & & & &\textit{PSMC1},\textit{ACO2}&\textit{-} \\[1.5pt]\hline\hline
+\end{tabular}}
+\label{tab:mod}
+\end{table}
+\end{landscape}
+\newpage
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{\textbf{\small{Post GWAS analysis at the sub-network level comparing dmGWAS and ancGWAS using the pathway-based simulation data set: Top $20$ genes with moderate/significant $p$-values obtained (based on Liptak-Stouffer method) at the sub-network level derived from ancGWAS and dmGWAS \cite{jia}. The table displays the top biological pathway associated with each sub-network from both methods, and the score of overlap ($Z\_w$) between the sub-network and the associated biological pathway. $\#$Overlaps denotes the number of overlapping genes between sub-network and corresponding pathway. OvP-disease provides the list of overlapping genes between the sub-network and the simulated disease genes. In bold are the simulated disease genes.}}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.7}{
+\begin{tabular}{c c l c l c c l |l c c l c c l}\hline\hline
+\multicolumn{8}{|c|}{ancGWAS: Sub-network association } & \multicolumn{7}{|c|}{dmGWAS: Sub-network association} \\[3pt] \hline\hline
+\textbf{Liptak} &  \textbf{Q$\_$Liptak} & \textbf{Hub} & \textbf{\#Gene} & \textbf{Pathway} & \textbf{$Z\_w$} & \textbf{$\#$overlaps} & \textbf{OvP-disease} & \textbf{Hub} & \textbf{Z} & \textbf{\#Gene} & \textbf{Pathways} & \textbf{Z} & \textbf{\#Overlaps} &  \textbf{OvP-disease} \\[3pt] \hline\hline
+
+$1.41e^{-06}$ & $0.09$ & \textit{RNF14} & $7363$ & Age mouse hypotha- & $4.6$ & $708$&\textit{ATP5C1},\textbf{\textit{ATP5O}}, & \textit{ETS1} & $10.3$ & $10$ & Integrin family  & $5.4$ & $4$ & \textit{-} \tabularnewline
+
+&&&& lamus Up-regulated &&& \textbf{\textit{BTG3}},\textit{ATP5L} &&&&cell surface interactions &&&\tabularnewline
+
+$9.63e^{-06}$ & $0.01$ & \textit{SMARCC2} & $743$ & TRAIL signaling & $-0.5$ & $76$ & \textit{ATP5C1} & \textit{UBB} & $9.9$ & $9$ & Proteoglycan syndecan & $3.7$ & $3$ & \textit{-} \tabularnewline
+
+&&&& pathway &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$2.4e^{-05}$ & $0.02$ & \textit{SMARCC2} & $358$ & Glypican pathway & $8.6$ & $85$ & \textit{-} & \textit{HNF4A} & $9.8$ & $10$ & Integrin family cell & $3.6$ & $3$ & \textit{-} \tabularnewline 
+
+&&&&  &&&&&&& surface interactions &&& \\[2pt]\hline\hline
+
+$5.86e^{-05}$ & $0.01$ & \textit{FXYD3} & $152$ & Proteoglycan syndecan & $3.1$ & $25$&\textit{-} & \textit{PTN} & $9.9$ & $8$ & Proteoglycan syndecan & $1.1$ & $2$ & \textit{-} \tabularnewline
+
+&&&& -mediated signaling events  &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$7.02e^{-05}$ & $0.07$ & \textit{SSPO} & $98$ & Proteoglycan syndecan & $4.4$ & $16$&\textit{-} & \textit{SPTLC1} & $10.4$ & $11$ & Proteoglycan syndecan & $1.2$ & $1$ & \textit{-} \tabularnewline
+
+&&&&  -mediated signaling events &&&&&&&-mediated signaling events &&&\tabularnewline
+
+
+$7.7e^{-05}$ & $0.09$ & \textit{RPN2} & $94$ & Cell Cycle, Mitotic & $13.0$ & $8$&\textit{ATP5L} & \textit{COPS6} & $10.5$ & $11$ & Adaptive Immune & $21.9$ & $2$ & \textit{-} \tabularnewline
+
+&&&&  Mitotic &&&&&&&system &&&\tabularnewline
+
+$9.05e^{-05}$ & $0.01$ & \textit{SRRM2} & $85$ & Glypican & $3.4$ & $12$&\textit{-} & \textit{ATXN7} & $9.9$ & $9$ & Age mouse hypotha- & $128.4$ & $2$ & \textit{-} \tabularnewline
+
+&&&& pathway &&&&&&& lamus Up-regulated &&&\tabularnewline
+
+$0.04871$ & $0.01$ & \textit{HDAC1} & $26$ & TRAIL signaling & $3.5$ & $5$&\textit{-} & \textit{BCAR3} & $10.5$ & $10$ & Proteoglycan syndecan & $2.2$ & $3$ & \textit{-} \tabularnewline
+
+&&&&  pathway &&&&&&&-mediated signaling events &&&\tabularnewline
+
+$0.11$ & $0.03$ & \textit{DGKZ} & $18$ & Thrombin/protease-activated & $8.5$ & $11$&\textit{-} & \textit{DMWD} & $10.2$ & $10$ & Proteoglycan syndecan & $2.9$ & $3$ & \textit{-} \tabularnewline
+
+&&&& receptor (PAR) pathway &&&&&&&-mediated signaling events &&&\tabularnewline
+$0.13$ & $0.07$ & \textit{F11R} & $20$ & Integrin family cell & $3.022$ & $4$&\textit{-} & \textit{GALK1} & $10.1$ & $11$ & Proteoglycan syndecan & $2.2$ & $3$ & \textit{-} \tabularnewline
+
+&&&& surface interactions &&&&&&&-mediated signaling events &&&\tabularnewline
+
+$0.15$ & $0.04$ & \textit{TSN} & $16$ & Cell Cycle & $6.0$ & $1$&\textit{-} & \textit{CBL} & $10.1$ & $8$ & Proteoglycan syndecan & $3.8$ & $4$ & \textit{-} \tabularnewline
+
+&&&& , Mitotic &&&&&&&-mediated signaling events &&&\tabularnewline
+
+$0.01$ & $0.01$ & \textit{GPR17} & $37$ & Sphingosine 1-phos & $9.6$ & $20$&\textit{-} & \textit{ATP6V1E1} & $10.1$ & $11$ & Hemostasis & $44.6$ & $5$ & \textit{-} \tabularnewline
+
+&&&& -phate (S1P) pathway &&&&&&& &&&\tabularnewline
+
+$0.06$ & $0.01$ & \textit{WNT3A} & $67$ & Glypican & $4.1$ & $14$&\textit{-} & \textit{MLH1} & $10.1$ & $9$ & Proteoglycan syndecan & $2.5$ & $4$ & \textit{-} \tabularnewline
+
+&&&& pathway &&&&&&& -mediated signalling events&&&\tabularnewline
+
+$0.06$ & $0.01$ & \textit{PDGFRB} & $64$ & ErbB receptor  & $4.1$ & $13$&\textit{-} & \textit{RPS14} & $10.0$ & $10$ & TRAIL signaling & $3.8$ & $3$ & \textit{-} \tabularnewline
+&&&& signaling network &&&&&&& pathway s&&&\tabularnewline
+
+$0.07$ & $0.01$ & \textit{FGFRL1} & $29$ & Proteoglycan syndecan & $5.6$ & $13$&\textit{-} & \textit{RORA} & $10.0$ & $9$ & LKB1 signaling & $2.7$ & $4$ & \textit{-} \tabularnewline
+
+&&&& -mediated signaling events &&&&&&&  events s&&&\tabularnewline
+
+$0.05$ & $0.01$ & \textit{RBM4} & $39$ & Sphingosine 1-phosphate & $3.7$ & $10$&\textit{-} & \textit{MDM2} & $10.0$ & $9$ & Proteoglycan syndecan & $1.1$ & $2$ & \textit{-} \tabularnewline
+&&&&  (S1P) pathway  &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$0.03$ & $0.01$ & \textit{MLL5} & $45$ & Proteoglycan syndecan & $8.8$ & $18$&\textit{-} & \textit{DSG1} & $10.0$ & $11$ & Signaling events mediated & $2.4$ & $3$ & \textit{-} \tabularnewline
+
+&&&&  -mediated signaling events  &&&&&&&  by VEGFR1 and VEGFR2 &&&\tabularnewline
+
+$0.06$ & $0.01$ & \textit{XPO1} & $14$ & Sphingosine 1-phos- & $1.3$ & $2$&\textit{-} & \textit{RPS27A} & $10.0$ & $10$ & Cell Cycle & $7.5$ & $1$ & \textit{-} \tabularnewline
+
+
+&&&& phate (S1P) pathway  &&&&&&& , Mitotic s&&&\tabularnewline
+
+$0.11$ & $0.012$ & \textit{LAMA1} & $17$ & Proteoglycan syndecan & $4.1$ & $6$ & \textit{-} & \textit{LRP2} & $9.9$ & $9$ & Proteoglycan syndecan & $2.2$ & $3$ &\textit{-} \tabularnewline
+
+&&&& -mediated signaling events &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$0.02$ & $0.02$ & \textbf{\textit{ACTG1}} & $102$ & Metabolism & $8.8$ & $17$ & \textbf{\textit{ATP5O}} & \textit{PIAS2} & $9.9$ & $10$ & Integrin family cell & $3.2$ & $5$ & \textit{-} \tabularnewline
+
+&&&&  &&&&&&& surface interactions &&&\tabularnewline
+
+\end{tabular}}
+\label{tab:path}
+\end{table}
+\end{landscape}
+
+\newpage
+
+\begin{landscape}
+\begin{table}[!htbp]
+\caption{\textbf{\small{Post GWAS analysis at the sub-network level comparing both ancGWAS and dmGWAS using a data set of the post-menopausal women of European ancestry with invasive breast cancer: Top $20$ genes with moderate/significant $p$-values obtained at the sub-network level derived from ancGWAS and dmGWAS \cite{jia} using $1,145$ post-menopausal women of European ancestry with invasive breast cancer and $1,142$ controls, genotyped at $528,169$ SNPs. The table displays the top biological pathway associated with each sub-network (from both ancGWAS and dmGWAS), and the score of overlap ($Z\_w$ score) between the sub-network and the associated biological pathway. $\#$Overlaps denotes the number of overlapping genes between the sub-network and pathway. \textbf{OvP-disease} provides the list of overlapping genes between the sub-network and known breast cancer genes or previously identified breast cancer associated genes.}}}
+% use packages:   array
+\centering
+\rowcolors{2}{gray!10}{}%
+\scalebox{0.7}{
+\begin{tabular}{c c l c l c c l |l c c l c c l}\hline\hline
+\multicolumn{8}{|c|}{ancGWAS: Sub-network association } & \multicolumn{7}{|c|}{dmGWAS: Sub-network association} \\[3pt] \hline\hline
+\textbf{Pvalues} & \textbf{Qvalues} & \textbf{Hub} & \textbf{\#Gene} & \textbf{Pathway} & \textbf{$Z\_w$} & \textbf{\#overlaps} & \textbf{OvP-disease} & \textbf{Hub} & \textbf{Z} & \textbf{\#Gene} & \textbf{Pathways} & \textbf{Z} & \textbf{\#Overlaps} &  \textbf{OvP-disease} \\[3pt] \hline\hline
+
+$2.26e^{-05}$ & $6.07e^{-07}$ & \textit{HSPA5} & $437$ & Proteoglycan syndecan & $5.4$ & $95$&\textit{TGFBR1},\textit{FGFR2} & \textit{PAX3} & $10.7$ & $13$ & Proteoglycan syndecan & $3.3$ & $5$ & \textit{FGFR2} \tabularnewline
+
+&&&& -mediated signaling events &&&&&&&-mediated signaling events &&&\tabularnewline
+$2.71e^{-05}$ & $4.7e^{-05}$ & \textit{ERRFI1} & $287$ & Proteoglycan syndecan & $19.3$ & $125$&\textit{-} & \textit{LMNB1} & $10.4$ & $12$ & Proteoglycan syndecan & $4.7$ & $7$ & \textit{FGFR2} \tabularnewline
+
+&&&& -mediated signaling events &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$3.88e^{-05}$ & $9.11e^{-05}$ & \textit{ZCCHC13} & $176$ & Proteoglycan syndecan & $5.5$ & $25$&\textit{-} & \textit{HRAS} & $10.33$ & $13$ & Proteoglycan syndecan & $3.3$ & $5$ & \textit{FGFR2} \tabularnewline
+
+&&&& -mediated signaling events &&&&&&& -mediated signaling events &&& \tabularnewline
+
+$0.008$ & $0.08$ & t{SYTL4} & $129$ & Proteoglycan syndecan & $1.1$ & $10$ &\textit{EPS8},\textit{PKN1}, & \textit{KITLG} &$10.0$ & $14$ & Endogenous TLR & $136.2$ & $5$ & \textit{FGFR2} \tabularnewline
+
+&&&&-mediated signaling event &&&\textit{CDKN1A},\textit{KITLG}, & & & & signaling & & & \tabularnewline
+
+&&&&&&&\textit{EXOC7},\textit{PIDD}, & & & && & & \tabularnewline
+
+&&&&&&&\textit{NRIP1},\textit{KRT17}, &&&&&&& \tabularnewline
+
+&&&&&&&\textit{ZFP36},\textit{SMARCD1}, &&&&&&& \tabularnewline
+
+&&&&&&&\textit{CCNK} &&&&&&& \tabularnewline
+
+$0.002$ & $4.11e^{-05}$ & \textit{KRT74} & $48$ & Proteoglycan syndecan & $9.9$ & $22$&\textit{-} & \textit{OGG1} & $10.4$ & $12$ & Proteoglycan syndecan & $4.7$ & $7$ & \textit{FGFR2} \tabularnewline
+
+&&&& -mediated signaling events &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$0.003$ & $6.71e^{-06}$ & \textit{ADD1} & $26$ & Signaling events mediated & $5.0$ & $11$&\textit{-} & \textit{CAV1} & $10.6$ & $13$ & Proteoglycan syndecan & $7.03$ & $10$ & \textit{FGFR2} \tabularnewline
+
+&&&& by VEGFR1 and VEGFR2 &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$0.009$ & $1.83e^{-05}$ & \textit{HSF1} & $89$ & Proteoglycan syndecan & $3.9$ & $21$&\textit{-} & \textit{NMT2} & $10.5$ & $13$ & Proteoglycan syndecan & $5.9$ & $8$ & \textit{FGFR2} \tabularnewline
+
+&&&& -mediated signaling events  &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$0.01$ & $7.75e^{-08}$ & \textit{ERRFI1} & $130$ & ErbB receptor  & $14.8$ & $61$&\textit{-} & \textit{CTSG} & $10.7$ & $13$ & Thrombin/protease-activated & $6.3$ & $8$ & \textit{FGFR2} \tabularnewline
+
+&&&& signaling network &&&&&&&  receptor (PAR) pathway &&&\tabularnewline
+
+$0.01$ & $8.63e^{-05}$ & \textit{HIF3A} & $373$ & Integrin family cell & $2.6$ & $70$&\textit{-} & \textit{PTPRF} & $10.3$ & $12$ & Proteoglycan syndecan & $5.3$ & $7$ & \textit{FGFR2} \tabularnewline
+
+&&&&  surface interactions &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$0.03$ & $3.47e^{-06}$ & \textit{NOP56} & $92$ & Proteoglycan syndecan & $10.1$ & $36$&\textit{FGFR2} & \textit{CHRM2} & $10.6$ & $12$ & Endogenous TLR  & $133.9$ & $4$ & \textit{FGFR2} \tabularnewline
+
+&&&& -mediated signaling events &&&&&&& signaling &&&\tabularnewline
+
+$0.07$ & $7.0e^{-06}$ & \textit{TRMT112} & $117$ & Signaling events mediated & $1.4$ & $20$&\textit{-} & \textit{PRKCD} & $10.6$ & $12$ & Proteoglycan syndecan & $3.3$ & $5$ & \textit{FGFR2} \tabularnewline
+
+&&&& by VEGFR1 and VEGFR2 &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$0.09$ & $1.91e^{-05}$ & \textit{STX1A} & $34$ & Signaling events mediated & $5.2$ & $10$&\textit{-} & \textit{PABPN1} & $10.4$ & $13$ & Proteoglycan syndecan & $5.3$ & $8$ & \textit{FGFR2} \tabularnewline
+
+&&&& by VEGFR1 and VEGFR2  &&&&&&& -mediated signaling events &&&\tabularnewline
+
+
+$0.03$ & $0.08$ & \textit{PI4KB} & $46$ & Sphingosine 1-phosphate & $3.8$ & $9$&\textit{-} & \textit{PRKAR2A} & $10.2$ & $13$ & Proteoglycan syndecan & $4.9$ & $8$ & \textit{FGFR2} \tabularnewline
+
+&&&&  (S1P) pathway &&&&&&& -mediated signaling events &&& \tabularnewline
+
+$0.05$ & $0.07$ & \textit{PTPN11} & $68$ & Proteoglycan syndecans & $12.8$ & $38$&\textit{IGFBP3},\textit{IGF1} & \textit{BRD4} & $10.138$ & $12$ & Endogenous TLR  & $123.6$ & $4$ & \textit{FGFR2} \tabularnewline
+
+&&&& -mediated signaling event &&&&&&& signaling &&& \tabularnewline
+
+$0.04$ & $0.09$ & \textit{PCK1} & $52$ & TRAIL signaling pathway & $6.1$ & $17$&\textit{-} & \textit{UBB} & $10.04$ & $10$ & Proteoglycan syndecan & $2.2$ & $3$ & \textit{FGFR2} \tabularnewline
+
+&&&&  pathway &&&&&&& -mediated signaling events &&& \tabularnewline
+$0.04$ & $0.03$ & \textit{RAB3IP} & $27$ & Metabolism of  & $17.9$ & $3$&\textit{-} & \textit{RPS27A} & $9.9$ & $10$ & Proteoglycan syndecan & $2.2$ & $3$ & \textit{FGFR2} \tabularnewline
+
+&&&& proteins &&&&&&& -mediated signaling events &&& \tabularnewline
+
+$0.07$ & $0.03$ & \textit{BCL2L1} & $41$ & Proteoglycan syndecan & $3.9$ & $12$&\textit{-} & \textit{PLCG1} & $9.89$ & $9$ & Proteoglycan syndecan & $4.6$ & $6$ & \textit{FGFR2} \tabularnewline
+
+&&&& -mediated signaling events &&&&&&& -mediated signaling events &&& \tabularnewline
+
+$0.16$ & $6.33e^{-05}$ & \textit{DTX3L} & $19$ & Proteoglycan syndecan & $3.1$ & $4$&\textit{-} & \textit{ITGB2} & $10.3$ & $11$ & Proteoglycan syndecan & $3.6$ & $6$ & \textit{FGFR2} \tabularnewline
+
+&&&& -mediated signaling events &&&&&&& -mediated signaling events &&&\tabularnewline
+
+$0.2$ & $1.61e^{-08}$ & \textit{KCNJ1} & $19$ & Beta1 integrin cell  & $4.22$ & $7$&\textit{-} & \textit{CBL} & $10.8$ & $12$ & Proteoglycan syndecan & $3.6$ & $6$ & \textit{-} \tabularnewline
+
+&&&& surface interactions &&&&&&&-mediated signaling events &&&\tabularnewline
+
+$0.24$ & $0.05$ & \textit{DGKZ} & $18$ & Thrombin/protease-activated & $8.5$ & $11$&\textit{-} & \textit{KRT8} & $10.3$ & $12$ & Proteoglycan syndecan $5.9$ & $8$ & \textit{FGFR2} \tabularnewline
+
+&&&&  receptor (PAR) pathway &&&&&&& -mediated signaling events &&& \\[2pt]\hline\hline 
+\end{tabular}}
+\label{tab:subcancer2}
+\end{table}
+\end{landscape}
+
+\end{document}
+
+
